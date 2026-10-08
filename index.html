@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paciente con enfermedad autoinmune · Guía de Estudio Nivel Residente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --navy:#22362a; --navy2:#334f3e; --blue:#486e57; --blue2:#557f66; --sky:#bcd8c6;
+  --orange:#5b4bb3; --terra:#4e3f9e; --red:#c0392b; --green:#1e8449; --purple:#6c3483;
+  --bg:#f5f8f6; --card:#ffffff; --cardhead:#e9f1ec; --text:#1c2733; --muted:#566573; --line:#dfe6ec;
+  --pearl:#f0eefb; --alert:#fdecec; --algo:#eef3ef; --zebra:#f6f9f7; --ok:#e9f6ee;
+  --shadow:0 2px 6px rgba(34,54,42,.06),0 8px 24px rgba(34,54,42,.07);
+  --sbw:290px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1411; --card:#171f1a; --cardhead:#1f2b24; --text:#e3e9ef; --muted:#9fb0c0; --line:#2b3a31;
+    --pearl:#1f1b38; --alert:#321a1c; --algo:#18241d; --zebra:#152019; --ok:#14301f; --blue:#486e57; --blue2:#86b598;
+    --shadow:0 2px 10px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1411; --card:#171f1a; --cardhead:#1f2b24; --text:#e3e9ef; --muted:#9fb0c0; --line:#2b3a31;
+  --pearl:#1f1b38; --alert:#321a1c; --algo:#18241d; --zebra:#152019; --ok:#14301f; --blue:#486e57; --blue2:#86b598;
+  --shadow:0 2px 10px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Roboto,"Segoe UI",system-ui,-apple-system,Arial,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:var(--blue2)}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:4px}
+
+/* progress */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--orange);width:0;z-index:60}
+
+/* sidebar */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sbw);background:var(--navy);color:#dbe7f3;overflow-y:auto;z-index:50;
+  padding:calc(env(safe-area-inset-top,0px) + 22px) 0 calc(env(safe-area-inset-bottom,0px) + 22px);border-right:4px solid var(--terra)}
+.sb-brand{padding:0 22px 18px;border-bottom:1px solid rgba(255,255,255,.12)}
+.sb-brand .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;color:#fff;background:var(--terra);padding:3px 10px;border-radius:999px}
+.sb-brand h1{font-size:19px;line-height:1.25;margin:10px 0 2px;color:#fff}
+.sb-brand p{margin:0;font-size:13px;color:#9fb9d3}
+.toc{list-style:none;margin:0;padding:12px 10px}
+.toc>li{margin:2px 0}
+.toc a{display:block;color:#dbe7f3;text-decoration:none;padding:7px 12px;border-radius:8px;font-size:14px;line-height:1.35}
+.toc a:hover{background:rgba(255,255,255,.08)}
+.toc a.active{background:var(--blue2);color:#fff}
+.toc .lvl1>a{font-weight:700;color:#fff;margin-top:8px}
+.toc ul{list-style:none;padding:0 0 0 10px;margin:0}
+.toc ul a{font-size:13px;color:#b5cbe0;padding:5px 12px}
+.sb-tools{padding:12px 22px;border-top:1px solid rgba(255,255,255,.12);display:flex;gap:8px;flex-wrap:wrap}
+.sb-tools button{flex:1;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px;font:inherit;font-size:13px;cursor:pointer}
+.sb-tools button:hover{background:rgba(255,255,255,.18)}
+#menuBtn{display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:12px;z-index:70;background:var(--terra);color:#fff;border:0;border-radius:10px;padding:10px 14px;font:inherit;font-weight:700;box-shadow:var(--shadow);cursor:pointer}
+#scrim{display:none}
+
+/* main */
+main{margin-left:var(--sbw)}
+.hero{background:linear-gradient(120deg,var(--navy) 0%,var(--navy2) 50%,#6f9a80 100%);color:#fff;text-align:center;padding:64px 24px 54px;border-bottom:7px solid var(--terra);position:relative;overflow:hidden}
+.hero>*{position:relative;z-index:1}
+.hero svg.ecg{position:absolute;z-index:0;left:0;right:0;bottom:2px;width:100%;height:70px;opacity:.22}
+.hero .eyebrow{letter-spacing:.22em;font-size:13px;font-weight:600;color:#cfe3f5}
+.hero h1{font-size:clamp(30px,5vw,50px);line-height:1.1;margin:14px 0 10px;font-weight:800;letter-spacing:-.01em}
+.hero .sub{font-size:clamp(16px,2.2vw,20px);color:#d6e6f4;margin:0 auto;max-width:760px}
+.hero .chips{margin-top:22px;margin-bottom:26px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.hero .chips span{font-size:12.5px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:4px 12px;border-radius:999px}
+.wrap{max-width:1040px;margin:0 auto;padding:34px 22px 60px}
+
+/* section card */
+.sec{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);margin:0 0 34px;overflow:hidden}
+.sec-head{background:var(--cardhead);padding:28px 32px 0;border-bottom:4px solid var(--sky)}
+.badge{display:inline-block;background:var(--terra);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.06em;padding:4px 12px;border-radius:999px;text-transform:uppercase}
+.badge.ev{background:var(--orange);font-size:10.5px;padding:2px 8px;vertical-align:2px;margin-left:4px;letter-spacing:0}
+.badge.ev.b{background:var(--blue2)} .badge.ev.g{background:var(--green)} .badge.ev.r{background:var(--red)} .badge.ev.n{background:#7f8c8d}
+.sec-head h2{font-size:clamp(22px,3vw,28px);color:var(--navy2);margin:12px 0 0;padding-bottom:16px;border-bottom:2px solid var(--sky);line-height:1.25}
+:root[data-theme="dark"] .sec-head h2{color:#cfe3f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sec-head h2{color:#cfe3f5}}
+.sec-head .lead{margin:12px 0 18px;color:var(--muted);font-size:15px}
+.sec-body{padding:26px 32px 30px}
+h3.sub{background:var(--blue);color:#fff;font-size:16px;padding:11px 18px;border-radius:8px;margin:30px 0 16px;scroll-margin-top:16px}
+h3.sub:first-child{margin-top:0}
+h4{color:var(--blue2);font-size:16px;margin:22px 0 8px}
+p{margin:0 0 12px;text-align:left}
+ul.dots{padding-left:20px;margin:6px 0 12px} ul.dots li{margin:4px 0}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:760px){.cols2,.cols3{grid-template-columns:1fr}}
+
+/* boxes */
+.box{border-radius:8px;padding:16px 18px;margin:18px 0;border-left:6px solid}
+.box .bt{font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.box p:last-child,.box ul:last-child{margin-bottom:0}
+.pearl{background:var(--pearl);border-color:var(--orange)} .pearl{border-color:var(--orange)} .pearl .bt{color:#4e3f9e}
+.alert{background:var(--alert);border-color:var(--red)} .alert .bt{color:var(--red)}
+.algo{background:var(--algo);border-color:var(--blue2)} .algo .bt{color:var(--blue2)}
+.okbox{background:var(--ok);border-color:var(--green)} .okbox .bt{color:var(--green)}
+
+/* tables */
+.tw{overflow-x:auto;margin:14px 0 18px;border-radius:10px;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14.2px;min-width:560px}
+th{background:var(--navy2);color:#fff;text-align:left;padding:10px 12px;font-weight:600;vertical-align:bottom}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even){background:var(--zebra)}
+td.c,th.c{text-align:center}
+caption{caption-side:top;text-align:left;font-weight:700;padding:10px 12px;color:var(--muted);font-size:13px;background:var(--card)}
+
+/* flow / algorithm */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:8px 0}
+.flow .node{flex:1 1 150px;background:var(--card);border:2px solid var(--blue2);border-radius:10px;padding:12px 14px;font-size:14px;position:relative}
+.flow .node b{display:block;color:var(--blue2);margin-bottom:4px}
+.flow .arrow{flex:0 0 34px;display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:22px;font-weight:800}
+.flow .node.o{border-color:var(--orange)} .flow .node.o b{color:var(--orange)}
+.flow .node.r{border-color:var(--red)} .flow .node.r b{color:var(--red)}
+.flow .node.g{border-color:var(--green)} .flow .node.g b{color:var(--green)}
+@media (max-width:760px){.flow{flex-direction:column}.flow .arrow{transform:rotate(90deg);height:30px}}
+.vflow{display:flex;flex-direction:column;align-items:stretch;gap:0}
+.vflow>.arrow{color:var(--orange);font-weight:800;font-size:20px;line-height:1;padding:0 6px;margin:4px auto;width:fit-content;transform:rotate(90deg)}
+.branch{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.step{background:var(--card);border:2px solid var(--blue2);border-radius:10px;padding:12px 14px;font-size:14px}
+.step .h{font-weight:800;color:var(--blue2);margin-bottom:4px}
+.step.o{border-color:var(--orange)} .step.o .h{color:var(--orange)}
+.step.r{border-color:var(--red)} .step.r .h{color:var(--red)}
+.step.g{border-color:var(--green)} .step.g .h{color:var(--green)}
+.step.p{border-color:var(--purple)} .step.p .h{color:var(--purple)}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}
+@media (max-width:860px){.pillars{grid-template-columns:1fr 1fr}}
+.pillar{border-radius:10px;padding:14px;color:#fff;text-align:center}
+.pillar .n{font-size:22px;font-weight:800}
+.pillar small{display:block;opacity:.92;font-size:12.5px;line-height:1.4;margin-top:4px}
+
+/* quad */
+.quad{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;font-size:14px;margin:12px 0}
+.quad .ax{font-weight:700;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px}
+.quad .q{border-radius:10px;padding:12px;border:2px solid}
+.quad .q b{display:block;margin-bottom:3px}
+
+/* image placeholders */
+.ph{border:2px dashed var(--sky);border-radius:10px;background:var(--algo);padding:18px;text-align:center;color:var(--muted);font-size:13.5px;min-height:150px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.ph .ic{font-size:28px}
+.ph b{color:var(--blue2);font-size:14px}
+
+/* details (round questions) */
+details.rq{border:1px solid var(--line);border-radius:10px;margin:10px 0;background:var(--card);overflow:hidden}
+details.rq summary{cursor:pointer;padding:14px 16px 14px 52px;font-weight:600;position:relative;list-style:none}
+details.rq summary::-webkit-details-marker{display:none}
+details.rq summary .num{position:absolute;left:12px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--terra);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center}
+details.rq[open] summary{background:var(--cardhead)}
+details.rq .ans{padding:4px 18px 16px 52px;border-top:1px solid var(--line)}
+details.rq .ans p:first-child{margin-top:12px}
+
+/* cases */
+.case{border:1px solid var(--line);border-radius:12px;margin:20px 0;overflow:hidden;background:var(--card)}
+.case-h{background:var(--navy2);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.case-h b{font-size:16px}
+.case-b{padding:16px 18px}
+.case .stage{border-left:4px solid var(--blue2);padding:8px 14px;margin:10px 0;background:var(--algo);border-radius:0 8px 8px 0}
+.case .stage.hidden{display:none}
+.case .stage .lab{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--blue2)}
+.case .stage.dx{border-color:var(--orange);background:var(--pearl)} .case .stage.dx .lab{color:var(--orange)}
+.case .stage.tx{border-color:var(--green);background:var(--ok)} .case .stage.tx .lab{color:var(--green)}
+.btn{background:var(--blue2);color:#fff;border:0;border-radius:8px;padding:9px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.1)}
+.btn.o{background:var(--terra)} .btn.ghost{background:transparent;color:var(--blue2);border:1px solid var(--blue2)}
+
+/* quiz */
+.qz{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;background:var(--card)}
+.qz .qt{font-weight:700;margin-bottom:10px}
+.qz .qt span{color:var(--terra)}
+.qz .opts{display:grid;gap:8px}
+.qz button.opt{text-align:left;background:var(--algo);border:1.5px solid var(--line);border-radius:8px;padding:10px 14px;font:inherit;font-size:14.5px;color:var(--text);cursor:pointer}
+.qz button.opt:hover:not(:disabled){border-color:var(--blue2)}
+.qz button.opt.right{background:#d5f1df;border-color:var(--green);color:#0d3b20;font-weight:600}
+.qz button.opt.wrong{background:#fadbd8;border-color:var(--red);color:#5b1610}
+.qz .exp{display:none;margin-top:10px;padding:10px 14px;border-radius:8px;background:var(--pearl);border-left:4px solid var(--orange);font-size:14.5px}
+.qz.done .exp{display:block}
+.score{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:5;background:var(--navy2);color:#fff;border-radius:10px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:var(--shadow)}
+
+/* calculator */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:0}
+.tabs button{background:var(--algo);border:1px solid var(--line);border-bottom:0;border-radius:8px 8px 0 0;padding:10px 14px;font:inherit;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.panel{border:1px solid var(--line);border-radius:0 10px 10px 10px;padding:18px;background:var(--card)}
+.panel[hidden]{display:none}
+.frm{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px 18px}
+.frm label{font-size:13.5px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px}
+.frm select,.frm input[type=number]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--line);font:inherit;font-size:14.5px;background:var(--card);color:var(--text)}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;cursor:pointer;background:var(--algo)}
+.chk input{margin-top:4px}
+.result{margin-top:16px;border-radius:10px;padding:16px 18px;border-left:6px solid var(--blue2);background:var(--algo)}
+.result .big{font-size:22px;font-weight:800;color:var(--navy2)}
+:root[data-theme="dark"] .result .big{color:#cfe3f5}
+.kpi{display:inline-block;padding:2px 10px;border-radius:999px;color:#fff;font-weight:700;font-size:13px}
+
+.foot{color:var(--muted);font-size:13px;text-align:center;padding:10px 0 30px}
+ol.refs{padding-left:26px;font-size:14px} ol.refs li{margin:6px 0}
+.small{font-size:13px;color:var(--muted)}
+mark{background:#f6e7b8;color:inherit;padding:0 3px;border-radius:3px}
+
+
+/* figuras */
+figure.fig{margin:22px 0 26px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+figure.fig .imgw{background:#fff;padding:14px;display:flex;justify-content:center;overflow-x:auto}
+figure.fig .imgw{align-items:flex-start}
+figure.fig .imgw img{display:block;height:auto;max-width:100%;cursor:zoom-in;border-radius:4px;align-self:flex-start;object-fit:contain}
+figure.fig .imgw.narrow img{max-width:min(100%,380px)}
+figure.fig figcaption{background:var(--navy2);color:#fff;padding:10px 16px;font-size:14px;font-weight:600;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+figure.fig figcaption .badge{background:var(--terra)}
+.fig-exp{padding:16px 20px 18px;font-size:15px}
+.fig-exp h5{font-size:14px;color:var(--orange);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.fig-exp h5:first-child{margin-top:0}
+.fig-exp p:last-child,.fig-exp ul:last-child{margin-bottom:0}
+.fig-side{display:grid;grid-template-columns:minmax(0,380px) 1fr;gap:0}
+.fig-side .imgw{border-right:1px solid var(--line)}
+@media (max-width:860px){.fig-side{grid-template-columns:1fr}.fig-side .imgw{border-right:0;border-bottom:1px solid var(--line)}}
+#lightbox{position:fixed;inset:0;background:rgba(5,15,28,.88);display:none;align-items:center;justify-content:center;z-index:100;padding:calc(env(safe-area-inset-top,0px) + 20px) 20px calc(env(safe-area-inset-bottom,0px) + 20px);cursor:zoom-out}
+#lightbox.on{display:flex}
+#lightbox img{max-width:100%;max-height:100%;background:#fff;border-radius:6px}
+
+@media (max-width:1000px){
+  .sidebar{transform:translateX(-100%);transition:transform .25s ease}
+  body.nav-open .sidebar{transform:none}
+  body.nav-open #scrim{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:45}
+  #menuBtn{display:block}
+  main{margin-left:0}
+  .hero{padding-top:78px}
+  .sec-head{padding:22px 18px 0}.sec-body{padding:20px 18px 24px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sidebar{transition:none}}
+@media print{.sidebar,#menuBtn,#progress{display:none}main{margin:0}.case .stage.hidden,.qz .exp{display:block!important}details.rq{break-inside:avoid}}
+
+:root[data-theme="dark"] .pearl .bt{color:#b3a8f0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pearl .bt{color:#b3a8f0}}
+.hero svg.ecg{opacity:.28}
+
+.risk-bar{display:flex;height:14px;border-radius:999px;overflow:hidden;margin:10px 0 4px}
+.risk-bar span{flex:1}
+
+.hm{border-collapse:separate;border-spacing:3px;min-width:520px}
+.hm th{border-radius:6px}
+.hm td{border:0;border-radius:6px;text-align:center;font-weight:700;font-size:13.5px}
+.hm td.lbl{text-align:left;background:var(--algo);font-weight:600;color:var(--text)}
+.hm .g{background:#43a047;color:#fff}.hm .y{background:#f2c94c;color:#3d2f00}.hm .o{background:#ef8a2b;color:#fff}.hm .r{background:#d63c4a;color:#fff}.hm .dr{background:#8b1a3a;color:#fff}
+.hm td.sel{outline:3px solid var(--navy);outline-offset:1px}
+
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="menuBtn" aria-controls="sidebar" aria-expanded="false">☰ Índice</button>
+<div id="scrim"></div>
+<div id="lightbox" role="dialog" aria-label="Imagen ampliada"><img alt=""></div>
+
+<nav class="sidebar" id="sidebar" aria-label="Índice">
+  <div class="sb-brand">
+    <span class="tag">MEDICINA INTERNA</span>
+    <h1>Paciente con enfermedad autoinmune</h1>
+    <p>Guía de estudio · nivel residente</p>
+  </div>
+  <ul class="toc" id="toc">
+    <li class="lvl1"><a href="#s1">1. Introducción y fundamentos</a>
+      <ul>
+        <li><a href="#s1-1">1.1 Definiciones y espectro</a></li>
+        <li><a href="#s1-2">1.2 Epidemiología</a></li>
+        <li><a href="#s1-3">1.3 Factores de riesgo</a></li>
+        <li><a href="#s1-4">1.4 Inmunopatogenia</a></li>
+      </ul></li>
+    <li class="lvl1"><a href="#s2">2. Clínica y diagnóstico</a>
+      <ul>
+        <li><a href="#s2-1">2.1 Cuándo sospechar</a></li>
+        <li><a href="#s2-2">2.2 Enfermedades principales</a></li>
+        <li><a href="#s2-3">2.3 Autoanticuerpos y laboratorio</a></li>
+        <li><a href="#s2-4">2.4 Criterios y diagnóstico diferencial</a></li>
+      </ul></li>
+    <li class="lvl1"><a href="#s3">3. Tratamiento</a>
+      <ul>
+        <li><a href="#s3-1">3.1 Principios terapéuticos</a></li>
+        <li><a href="#s3-2">3.2 Vademécum inmunomodulador</a></li>
+        <li><a href="#s3-3">3.3 Antes de inmunosuprimir: prevención</a></li>
+        <li><a href="#s3-4">3.4 Paciente hospitalizado y urgencias</a></li>
+        <li><a href="#s3-5">3.5 Embarazo y situaciones especiales</a></li>
+        <li><a href="#s3-6">3.6 Comorbilidades y pronóstico</a></li>
+      </ul></li>
+    <li class="lvl1"><a href="#s4">4. High yield para el examen</a>
+      <ul>
+        <li><a href="#s4-1">4.1 Calculadoras interactivas</a></li>
+        <li><a href="#s4-2">4.2 Preguntas de ronda</a></li>
+        <li><a href="#s4-3">4.3 Casos clínicos</a></li>
+        <li><a href="#s4-4">4.4 Autoevaluación (quiz)</a></li>
+      </ul></li>
+    <li class="lvl1"><a href="#s5">5. Bibliografía</a></li>
+  </ul>
+  <div class="sb-tools">
+    <button id="themeBtn" type="button">◐ Tema</button>
+    <button id="printBtn" type="button">⎙ Imprimir</button>
+  </div>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">MEDICINA INTERNA · REUMATOLOGÍA E INMUNOLOGÍA CLÍNICA</div>
+  <h1>Paciente con Enfermedad Autoinmune</h1>
+  <p class="sub">Del ANA positivo al paciente inmunosuprimido con fiebre: sospechar, interpretar autoanticuerpos, clasificar, tratar con seguridad y reconocer las urgencias autoinmunes</p>
+  <div class="chips">
+    <span>EULAR/ACR 2019 · LES</span><span>ACR/EULAR 2010 · AR</span><span>EULAR 2023 · LES</span><span>ACR 2022 · glucocorticoides y vacunas</span><span>Chapel Hill 2012</span><span>Harrison 22.ª ed.</span>
+  </div>
+  <svg class="ecg" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width="2"><path d="M100,36 c-20,-26 -50,-26 -50,0 c0,26 30,26 50,0 c20,-26 50,-26 50,0 c0,26 -30,26 -50,0z"/><path d="M420,36 c-16,-20 -40,-20 -40,0 c0,20 24,20 40,0 c16,-20 40,-20 40,0 c0,20 -24,20 -40,0z"/><path d="M740,36 c-20,-26 -50,-26 -50,0 c0,26 30,26 50,0 c20,-26 50,-26 50,0 c0,26 -30,26 -50,0z"/><path d="M1060,36 c-16,-20 -40,-20 -40,0 c0,20 24,20 40,0 c16,-20 40,-20 40,0 c0,20 -24,20 -40,0z"/></g></svg>
+</header>
+<div class="wrap">
+
+<!-- ===================== SECCIÓN 1 ===================== -->
+<section class="sec" id="s1">
+ <div class="sec-head">
+  <span class="badge">Fundamentos</span>
+  <h2>1. Introducción y fundamentos</h2>
+  <p class="lead">Las enfermedades autoinmunes sistémicas son la "gran imitadora" de la medicina interna: afectan a cualquier órgano, se confunden con infecciones y neoplasias, y su tratamiento conlleva riesgos propios. El internista debe saber cuándo sospecharlas, cómo interpretar los autoanticuerpos y cómo manejar al paciente inmunosuprimido que se complica.</p>
+ </div>
+ <div class="sec-body">
+
+  <h3 class="sub" id="s1-1">1.1 Definiciones y espectro</h3>
+  <div class="tw"><table><thead><tr><th>Concepto</th><th>Definición</th></tr></thead><tbody>
+   <tr><td><b>Autoinmunidad</b></td><td>Respuesta inmune (anticuerpos o linfocitos T) contra antígenos propios. Puede existir sin enfermedad (autoanticuerpos en personas sanas)</td></tr>
+   <tr><td><b>Enfermedad autoinmune</b></td><td>Daño tisular o disfunción causado por esa respuesta</td></tr>
+   <tr><td>Órgano-específica</td><td>Un órgano blanco: tiroiditis de Hashimoto, enfermedad de Graves, DM1, anemia perniciosa, miastenia gravis, enfermedad celíaca, hepatitis autoinmune</td></tr>
+   <tr><td><b>Sistémica</b> (enfermedades reumáticas autoinmunes sistémicas)</td><td>Múltiples órganos: <b>LES</b>, <b>artritis reumatoide</b>, síndrome de Sjögren, esclerosis sistémica, miopatías inflamatorias, vasculitis sistémicas, síndrome antifosfolípido, enfermedad mixta del tejido conectivo</td></tr>
+   <tr><td>Enfermedad autoinflamatoria</td><td>Activación de la inmunidad innata sin autoanticuerpos ni linfocitos autorreactivos (fiebre mediterránea familiar, enfermedad de Still, síndrome VEXAS)</td></tr>
+   <tr><td>Criterios de clasificación frente a diagnóstico</td><td>Los criterios (ACR/EULAR) se crearon para homogeneizar estudios; el diagnóstico es clínico y puede hacerse sin cumplirlos (o descartarse aunque se cumplan)</td></tr>
+   <tr><td>Síndrome de superposición</td><td>Rasgos de dos o más enfermedades (p. ej., LES + esclerosis sistémica, síndrome antisintetasa)</td></tr>
+  </tbody></table></div>
+
+  <h3 class="sub" id="s1-2">1.2 Epidemiología</h3>
+  <div class="cols3">
+   <div class="step"><div class="h">Frecuencia</div>En conjunto, las enfermedades autoinmunes afectan a ≈ <b>5–10%</b> de la población, con predominio en <b>mujeres</b> (≈ 80%) y en edad reproductiva. La AR afecta a ≈ 0,5–1% de los adultos; el LES a ≈ 20–150 por 100.000.</div>
+   <div class="step o"><div class="h">Colombia y Latinoamérica</div>Los estudios poblacionales (COPCORD) y los registros administrativos colombianos muestran una carga relevante de AR y LES; el LES en mestizos e indígenas latinoamericanos tiende a ser <b>más grave</b>, con más nefritis que en población europea.</div>
+   <div class="step r"><div class="h">Morbimortalidad</div>En LES y AR las principales causas de muerte son las <b>infecciones</b> y la <b>enfermedad cardiovascular</b> acelerada, además de la actividad de la enfermedad (nefritis, SNC) y las neoplasias. El retraso diagnóstico y la falta de adherencia empeoran el pronóstico.</div>
+  </div>
+
+  <h3 class="sub" id="s1-3">1.3 Factores de riesgo</h3>
+  <div class="cols2">
+   <div class="tw" style="margin-top:0"><table style="min-width:0"><caption>Factores genéticos y del huésped</caption><thead><tr><th>Factor</th><th>Ejemplos</th></tr></thead><tbody>
+    <tr><td><b>Sexo femenino</b>, estrógenos</td><td>LES (9:1), Sjögren (9:1), AR (3:1); cromosoma X (dosis génica, TLR7)</td></tr>
+    <tr><td><b>HLA</b></td><td>HLA-DRB1 "epítopo compartido" (AR), HLA-B27 (espondiloartritis), HLA-DR3 (LES, Sjögren)</td></tr>
+    <tr><td>Déficit de complemento temprano</td><td>C1q, C2, C4: LES de inicio temprano</td></tr>
+    <tr><td>Historia familiar</td><td>Agregación de diferentes enfermedades autoinmunes en una familia</td></tr>
+   </tbody></table></div>
+   <div class="tw" style="margin-top:0"><table style="min-width:0"><caption>Factores ambientales</caption><thead><tr><th>Factor</th><th>Enfermedad</th></tr></thead><tbody>
+    <tr><td><b>Tabaco</b></td><td>AR (citrulinación en el pulmón; anti-CCP), LES cutáneo</td></tr>
+    <tr><td><b>Radiación ultravioleta</b></td><td>Brotes de LES (apoptosis de queratinocitos)</td></tr>
+    <tr><td><b>Sílice</b>, solventes</td><td>AR, LES, esclerosis sistémica, vasculitis ANCA</td></tr>
+    <tr><td>Infecciones (VEB, otras)</td><td>Mimetismo molecular, activación de clones</td></tr>
+    <tr><td><b>Fármacos</b></td><td>Lupus inducido (hidralazina, procainamida, isoniazida, anti-TNF), vasculitis por levamisol (cocaína contaminada), miopatía por estatinas (anti-HMGCR), inhibidores de puntos de control inmunitario</td></tr>
+    <tr><td>Microbiota, enfermedad periodontal</td><td>AR (<i>Porphyromonas gingivalis</i>)</td></tr>
+   </tbody></table></div>
+  </div>
+
+  <h3 class="sub" id="s1-4">1.4 Inmunopatogenia</h3>
+  <div class="box algo"><div class="bt">⟶ De la pérdida de tolerancia al daño de órgano</div>
+   <div class="flow">
+    <div class="node"><b>1. Predisposición</b>Genes de susceptibilidad + sexo + factores ambientales.</div>
+    <div class="arrow">➔</div>
+    <div class="node o"><b>2. Pérdida de tolerancia</b>Falla de la tolerancia central y periférica (linfocitos T reguladores), mimetismo molecular, exposición de antígenos intracelulares por apoptosis defectuosa o NETosis.</div>
+    <div class="arrow">➔</div>
+    <div class="node p"><b>3. Fase preclínica</b>Autoanticuerpos detectables <b>años antes</b> de la enfermedad (anti-CCP en AR, ANA y anti-dsDNA en LES).</div>
+    <div class="arrow">➔</div>
+    <div class="node r"><b>4. Mecanismos de daño</b>Complejos inmunes y activación del complemento (LES), anticuerpos contra células (citopenias), citocinas (TNF, IL-6, interferón tipo I, IL-17), linfocitos T citotóxicos, autoanticuerpos patogénicos (anti-receptor), vasculopatía y fibrosis (esclerosis sistémica).</div>
+   </div>
+  </div>
+  <div class="box pearl"><div class="bt">✦ Lo esencial para el examen</div>
+   <ul class="dots">
+    <li>El <b>interferón tipo I</b> es central en el LES (blanco del anifrolumab); el <b>TNF</b> y la <b>IL-6</b> en la AR; los <b>linfocitos B</b> en LES, vasculitis ANCA y AR seropositiva (blanco del rituximab y el belimumab).</li>
+    <li>En el LES los complejos inmunes <b>consumen complemento</b>: C3 y C4 bajos y anti-dsDNA alto acompañan los brotes, sobre todo renales.</li>
+    <li>Los autoanticuerpos pueden preceder años a la enfermedad: un ANA positivo aislado en una persona asintomática <b>no</b> es una enfermedad.</li>
+   </ul>
+  </div>
+ </div>
+</section>
+<!-- ===================== SECCIÓN 2 ===================== -->
+<section class="sec" id="s2">
+ <div class="sec-head">
+  <span class="badge">Clínica y diagnóstico</span>
+  <h2>2. Presentación clínica y diagnóstico</h2>
+  <p class="lead">El diagnóstico se apoya en tres pilares: un <b>cuadro clínico compatible</b> (multisistémico), los <b>autoanticuerpos</b> pedidos con criterio y la <b>exclusión</b> de infecciones, neoplasias y fármacos. Los autoanticuerpos sin clínica confunden más de lo que ayudan.</p>
+ </div>
+ <div class="sec-body">
+
+  <h3 class="sub" id="s2-1">2.1 Cuándo sospechar una enfermedad autoinmune sistémica</h3>
+  <div class="cols2">
+   <div class="step"><div class="h">Síntomas y signos de alarma</div>
+    <ul class="dots" style="margin:0">
+     <li>Síntomas constitucionales prolongados: fiebre, pérdida de peso, fatiga intensa.</li>
+     <li><b>Artritis inflamatoria</b>: rigidez matutina &gt;30–60 min, tumefacción, mejoría con el movimiento.</li>
+     <li><b>Lesiones cutáneas</b>: eritema malar fotosensible, lupus discoide, púrpura palpable, pápulas de Gottron, heliotropo, esclerodactilia, úlceras digitales.</li>
+     <li><b>Fenómeno de Raynaud</b> (sobre todo de inicio tardío o con úlceras).</li>
+     <li>Úlceras orales, alopecia, ojo seco y boca seca, parotidomegalia.</li>
+     <li><b>Serositis</b>: pleuritis o pericarditis sin causa clara.</li>
+     <li><b>Citopenias</b> inmunes, <b>sedimento urinario activo</b>, proteinuria.</li>
+     <li>Debilidad muscular proximal con CK elevada; enfermedad pulmonar intersticial.</li>
+     <li>Mononeuritis múltiple, trombosis inexplicada, pérdidas fetales recurrentes.</li>
+    </ul></div>
+   <div class="tw" style="margin-top:0"><table style="min-width:0"><caption>Dolor articular: ¿inflamatorio o mecánico?</caption><thead><tr><th>Rasgo</th><th>Inflamatorio</th><th>Mecánico</th></tr></thead><tbody>
+    <tr><td>Rigidez matutina</td><td><b>&gt;30–60 min</b></td><td>&lt;30 min</td></tr>
+    <tr><td>Con la actividad</td><td>Mejora</td><td>Empeora</td></tr>
+    <tr><td>Con el reposo</td><td>Empeora (gelificación)</td><td>Mejora</td></tr>
+    <tr><td>Tumefacción</td><td>Sinovitis blanda, calor</td><td>Ósea, dura</td></tr>
+    <tr><td>Síntomas sistémicos</td><td>Frecuentes</td><td>Ausentes</td></tr>
+    <tr><td>PCR/VSG</td><td>Elevadas</td><td>Normales</td></tr>
+    <tr><td>Distribución típica</td><td>Pequeñas articulaciones de manos (MCF, IFP), muñecas, simétrica</td><td>IFD, rodillas, caderas, columna (artrosis)</td></tr>
+   </tbody></table></div>
+  </div>
+
+  <h3 class="sub" id="s2-2">2.2 Enfermedades autoinmunes sistémicas principales</h3>
+  <div class="tw"><table><thead><tr><th>Enfermedad</th><th>Clínica clave</th><th>Autoanticuerpos / laboratorio</th></tr></thead><tbody>
+   <tr><td><b>Lupus eritematoso sistémico</b></td><td>Mujer joven; eritema malar, fotosensibilidad, úlceras orales, alopecia, artritis no erosiva, serositis, citopenias, <b>nefritis</b>, compromiso neuropsiquiátrico</td><td>ANA (&gt;95%), <b>anti-dsDNA</b> (actividad, nefritis), <b>anti-Sm</b> (específico), C3/C4 bajos, antifosfolípidos, anti-Ro</td></tr>
+   <tr><td><b>Artritis reumatoide</b></td><td>Poliartritis simétrica de pequeñas articulaciones, rigidez matutina, erosiones, nódulos; extraarticular: pulmón (intersticial), vasculitis, ojo seco</td><td><b>Anti-CCP</b> (muy específico, pronóstico), <b>factor reumatoide</b>, PCR/VSG</td></tr>
+   <tr><td><b>Síndrome de Sjögren</b></td><td>Xeroftalmía, xerostomía, parotidomegalia; extraglandular: púrpura, neuropatía, nefritis intersticial (acidosis tubular), <b>riesgo de linfoma</b></td><td>Anti-Ro/SSA, anti-La/SSB, FR, hipergammaglobulinemia; biopsia de glándula salival</td></tr>
+   <tr><td><b>Esclerosis sistémica</b></td><td>Raynaud, engrosamiento cutáneo (limitada o difusa), úlceras digitales, reflujo, <b>enfermedad pulmonar intersticial</b>, <b>hipertensión pulmonar</b>, <b>crisis renal</b></td><td>Anti-centrómero (limitada, HTP), <b>anti-Scl-70</b> (difusa, intersticial), <b>anti-RNA polimerasa III</b> (crisis renal, cáncer); capilaroscopia</td></tr>
+   <tr><td><b>Miopatías inflamatorias</b></td><td>Debilidad proximal, CK elevada; dermatomiositis (Gottron, heliotropo, "manos de mecánico"); intersticial; <b>cáncer asociado</b></td><td>Anti-Jo-1 (síndrome antisintetasa), <b>anti-MDA5</b> (intersticial rápidamente progresiva), anti-TIF1γ (cáncer), anti-HMGCR (estatinas), anti-SRP</td></tr>
+   <tr><td><b>Vasculitis asociadas a ANCA</b></td><td>Granulomatosis con poliangitis (sinusitis, nódulos cavitados, glomerulonefritis), poliangitis microscópica, granulomatosis eosinofílica (asma, eosinofilia)</td><td><b>c-ANCA/PR3</b> (GPA), <b>p-ANCA/MPO</b> (PAM, GEPA)</td></tr>
+   <tr><td><b>Síndrome antifosfolípido</b></td><td>Trombosis arteriales o venosas, pérdidas gestacionales, trombocitopenia, livedo, valvulopatía</td><td>Anticoagulante lúpico, anticardiolipina, anti-β2-glicoproteína I, persistentes ≥12 semanas</td></tr>
+   <tr><td>Enfermedad mixta del tejido conectivo</td><td>Raynaud, manos edematosas, rasgos de LES, esclerosis y miositis; HTP</td><td>Anti-U1-RNP a título alto</td></tr>
+   <tr><td>Arteritis de células gigantes / polimialgia reumática</td><td>&gt;50 años; cefalea, claudicación mandibular, pérdida visual; dolor y rigidez de cinturas</td><td>VSG/PCR muy altas; ecografía o biopsia temporal</td></tr>
+  </tbody></table></div>
+
+  <h3 class="sub" id="s2-3">2.3 Autoanticuerpos y laboratorio</h3>
+  <div class="cols2">
+   <div class="step"><div class="h">Anticuerpos antinucleares (ANA)</div>
+    <ul class="dots" style="margin:0">
+     <li>Método de referencia: <b>inmunofluorescencia indirecta en células HEp-2</b>; informar título y patrón (nomenclatura ICAP).</li>
+     <li>Son <b>sensibles pero poco específicos</b>: positivos a 1:40 en hasta 25–30% de personas sanas, a 1:80 en ≈ 10–15%, a <b>≥1:160</b> en ≈ 5%. Aumentan con la edad, infecciones, neoplasias, fármacos y enfermedades autoinmunes órgano-específicas.</li>
+     <li>ANA negativo por IFI hace muy improbable el LES (VPN alto); el LES ANA negativo es excepcional.</li>
+     <li>El patrón <b>moteado fino denso (DFS70)</b> aislado se asocia a personas sanas y argumenta en contra de una enfermedad sistémica.</li>
+     <li><b>No pedir ANA</b> sin sospecha clínica (fatiga aislada, dolor generalizado): un resultado positivo en baja probabilidad genera más falsos positivos que diagnósticos.</li>
+     <li>Una vez positivo, <b>no repetir</b> para seguimiento; pedir los anticuerpos específicos según el patrón y la clínica.</li>
+    </ul></div>
+   <div class="tw" style="margin-top:0"><table style="min-width:0"><caption>Patrones del ANA y su orientación</caption><thead><tr><th>Patrón</th><th>Antígenos / asociación</th></tr></thead><tbody>
+    <tr><td>Homogéneo</td><td>dsDNA, histonas, nucleosomas: LES, lupus inducido</td></tr>
+    <tr><td>Moteado grueso / fino</td><td>Sm, U1-RNP, Ro, La: LES, EMTC, Sjögren</td></tr>
+    <tr><td>Centromérico</td><td>Esclerosis sistémica limitada</td></tr>
+    <tr><td>Nucleolar</td><td>Esclerosis sistémica (Scl-70 parcial, PM-Scl, RNA pol)</td></tr>
+    <tr><td>Citoplasmático</td><td>Jo-1 y otras sintetasas, ribosomal-P, mitocondrial (CBP)</td></tr>
+    <tr><td>Moteado fino denso (DFS70)</td><td>Personas sanas (aislado)</td></tr>
+   </tbody></table></div>
+  </div>
+  <div class="tw"><table><caption>Anticuerpos específicos</caption><thead><tr><th>Anticuerpo</th><th>Enfermedad</th><th>Valor clínico</th></tr></thead><tbody>
+   <tr><td><b>Anti-dsDNA</b></td><td>LES</td><td>Muy específico (≈ 95%); se correlaciona con actividad y <b>nefritis</b>; útil en el seguimiento</td></tr>
+   <tr><td><b>Anti-Sm</b></td><td>LES</td><td>El más específico (≈ 99%), poco sensible (≈ 20–30%; más en afrodescendientes y latinoamericanos)</td></tr>
+   <tr><td>Anti-histona</td><td>Lupus inducido por fármacos</td><td>Positivo en &gt;90% del inducido (también en LES idiopático)</td></tr>
+   <tr><td><b>Anti-Ro/SSA</b> · anti-La/SSB</td><td>Sjögren, LES (lupus cutáneo subagudo)</td><td>En el embarazo: <b>bloqueo AV congénito</b> y lupus neonatal</td></tr>
+   <tr><td>Anti-U1-RNP</td><td>EMTC (título alto), LES</td><td>—</td></tr>
+   <tr><td>Anti-Scl-70 (topoisomerasa I) · anti-centrómero · anti-RNA pol III</td><td>Esclerosis sistémica</td><td>Difusa e intersticial · limitada y HTP · difusa, crisis renal y cáncer</td></tr>
+   <tr><td>Anti-Jo-1 y antisintetasas · anti-MDA5 · anti-TIF1γ</td><td>Miopatías</td><td>Síndrome antisintetasa · intersticial rápidamente progresiva · cáncer</td></tr>
+   <tr><td><b>Anti-CCP</b> · factor reumatoide</td><td>AR</td><td>Anti-CCP: especificidad &gt;95%, erosiones; FR: menos específico (Sjögren, VHC, endocarditis, edad)</td></tr>
+   <tr><td><b>ANCA</b> (PR3, MPO)</td><td>Vasculitis de pequeño vaso</td><td>Pedir por ELISA (PR3/MPO) ante glomerulonefritis rápidamente progresiva, hemorragia alveolar, mononeuritis</td></tr>
+   <tr><td><b>Antifosfolípidos</b></td><td>SAF</td><td>Confirmar a las 12 semanas; el anticoagulante lúpico tiene mayor riesgo trombótico; "triple positivo" de alto riesgo</td></tr>
+  </tbody></table></div>
+  <div class="box pearl"><div class="bt">✦ Laboratorio complementario básico</div><p>Hemograma (citopenias), función renal, <b>uroanálisis con sedimento</b> y cociente proteína/creatinina (nefritis silente), PCR y VSG (en el LES activo la VSG sube y la <b>PCR suele ser normal</b>, salvo serositis o infección), C3 y C4, CK, función hepática, TSH, electroforesis de proteínas, serologías de VHB, VHC, VIH y, según el caso, parvovirus B19 y VEB.</p></div>
+
+  <h3 class="sub" id="s2-4">2.4 Criterios de clasificación y diagnóstico diferencial</h3>
+  <div class="cols2">
+   <div class="step"><div class="h">LES: criterios EULAR/ACR 2019</div><b>Criterio de entrada</b>: ANA ≥1:80 (alguna vez). Luego dominios clínicos e inmunológicos ponderados (se cuenta solo el de mayor peso en cada dominio): fiebre (2), citopenias (3–4), neuropsiquiátrico (2–5), mucocutáneo (2–6), serosas (5–6), articular (6), renal (4–10), antifosfolípidos (2), complemento bajo (3–4), anti-dsDNA o anti-Sm (6). <b>≥10 puntos</b> con ≥1 criterio clínico = LES (sensibilidad ≈ 96%, especificidad ≈ 93%). Calculadora en 4.1.</div>
+   <div class="step o"><div class="h">AR: criterios ACR/EULAR 2010</div>En un paciente con ≥1 articulación con sinovitis no explicada por otra causa: <b>afectación articular</b> (0–5), <b>serología</b> FR/anti-CCP (0–3), <b>reactantes de fase aguda</b> (0–1) y <b>duración ≥6 semanas</b> (0–1). <b>≥6 de 10</b> = AR. Permite el diagnóstico temprano, antes de las erosiones. Calculadora en 4.1.</div>
+  </div>
+  <div class="tw"><table><caption>Diagnóstico diferencial: lo que imita a una enfermedad autoinmune</caption><thead><tr><th>Grupo</th><th>Ejemplos</th><th>Claves</th></tr></thead><tbody>
+   <tr><td><b>Infecciones</b></td><td><b>Endocarditis</b> (FR+, hematuria, complemento bajo), VIH, <b>VHC</b> (crioglobulinemia), VHB (poliarteritis nodosa), <b>parvovirus B19</b> (artritis, citopenias, ANA transitorio), TB, dengue/chikungunya (artritis crónica)</td><td>Hemocultivos, serologías; siempre antes de inmunosuprimir</td></tr>
+   <tr><td><b>Neoplasias</b></td><td>Linfoma (fiebre, citopenias, ANA), mieloma, síndromes paraneoplásicos (dermatomiositis, vasculitis)</td><td>Electroforesis, imagen, biopsia</td></tr>
+   <tr><td><b>Fármacos</b></td><td>Lupus inducido (anti-histona, sin nefritis ni anti-dsDNA habitualmente; excepción anti-TNF), vasculitis por levamisol</td><td>Mejora al suspender</td></tr>
+   <tr><td>Fibromialgia</td><td>Dolor difuso, fatiga, sin inflamación objetiva; ANA positivo de bajo título frecuente</td><td>Examen y reactantes normales</td></tr>
+   <tr><td>Endocrinas</td><td>Hipotiroidismo (mialgias, CK alta), hiperparatiroidismo</td><td>TSH, calcio</td></tr>
+   <tr><td>Artropatías microcristalinas y artrosis</td><td>Gota, pseudogota (pueden ser poliarticulares)</td><td>Artrocentesis</td></tr>
+  </tbody></table></div>
+ </div>
+</section>
+<!-- ===================== SECCIÓN 3 ===================== -->
+<section class="sec" id="s3">
+ <div class="sec-head">
+  <span class="badge">Tratamiento</span>
+  <h2>3. Tratamiento y manejo clínico</h2>
+  <p class="lead">El tratamiento busca la <b>remisión</b> o la mínima actividad posible con la <b>menor exposición a glucocorticoides</b>, protegiendo de las infecciones, la osteoporosis y la enfermedad cardiovascular. El internista suele ser quien recibe al paciente inmunosuprimido con fiebre, con un brote o con toxicidad farmacológica.</p>
+ </div>
+ <div class="sec-body">
+
+  <h3 class="sub" id="s3-1">3.1 Principios terapéuticos</h3>
+  <div class="cols2">
+   <div class="step"><div class="h">Estrategias comunes</div>
+    <ul class="dots" style="margin:0">
+     <li><b>Tratar hasta el objetivo</b> (treat-to-target): remisión o baja actividad medida con índices (DAS28/CDAI en AR; SLEDAI y LLDAS en LES), con ajustes cada 1–3 meses.</li>
+     <li><b>Glucocorticoides</b>: la dosis mínima eficaz por el menor tiempo; en LES, meta de prednisona <b>≤5 mg/día</b> o suspender (EULAR 2023). Usar pulsos de metilprednisolona en compromiso grave para permitir dosis orales menores.</li>
+     <li>Fármacos <b>ahorradores de glucocorticoides</b> desde el inicio cuando la enfermedad lo requiere.</li>
+     <li>Decisión compartida, adherencia y educación (fotoprotección en LES; cesación del tabaco en AR).</li>
+    </ul></div>
+   <div class="step o"><div class="h">Esquemas de base</div>
+    <ul class="dots" style="margin:0">
+     <li><b>LES</b>: <b>hidroxicloroquina en todos</b> (salvo contraindicación; reduce brotes, trombosis y mortalidad) ≤5 mg/kg/día; inmunosupresor según el órgano (azatioprina, metotrexato, micofenolato); biológicos (belimumab, anifrolumab) en enfermedad persistente; nefritis: ver 3.4.</li>
+     <li><b>AR</b>: <b>metotrexato</b> como ancla (15 mg/semana ⇒ 20–25 mg + ácido fólico), puente corto de glucocorticoides; si no hay respuesta en 3–6 meses y hay factores de mal pronóstico: biológico (anti-TNF, abatacept, tocilizumab, rituximab) o inhibidor de JAK.</li>
+     <li><b>Vasculitis ANCA grave</b>: glucocorticoides (pauta reducida, PEXIVAS) + <b>rituximab</b> o ciclofosfamida; avacopan como ahorrador de glucocorticoides; mantenimiento con rituximab.</li>
+     <li><b>SAF</b> trombótico: <b>warfarina</b> (INR 2–3); los ACOD no se recomiendan en SAF triple positivo o arterial.</li>
+    </ul></div>
+  </div>
+
+  <h3 class="sub" id="s3-2">3.2 Vademécum inmunomodulador</h3>
+  <div class="tw"><table><thead><tr><th>Fármaco</th><th>Dosis habitual</th><th>Toxicidad principal</th><th>Monitoreo y precauciones</th></tr></thead><tbody>
+   <tr><td><b>Glucocorticoides</b></td><td>Prednisona 5–60 mg/día; metilprednisolona 250–1.000 mg/día × 3 (pulsos)</td><td>Infecciones, hiperglucemia, HTA, osteoporosis, necrosis avascular, cataratas, miopatía, psicosis, supresión suprarrenal</td><td>Glucemia, PA, densitometría; calcio + vitamina D; dosis de estrés si hay supresión</td></tr>
+   <tr><td><b>Hidroxicloroquina</b></td><td>200–400 mg/día (≤5 mg/kg de peso real)</td><td><b>Retinopatía</b> (dependiente de dosis acumulada), QT largo, miocardiopatía rara</td><td>Fondo de ojo basal y anual después de 5 años (antes si hay riesgo); ajuste en ERC; segura en el embarazo</td></tr>
+   <tr><td><b>Metotrexato</b></td><td>15–25 mg <b>semanal</b> VO o SC + ácido fólico 5 mg/semana</td><td>Mucositis, citopenias, hepatotoxicidad, <b>neumonitis</b>, teratogenicidad</td><td>Hemograma, ALT, creatinina cada 1–3 meses; evitar con TFGe &lt;30 y alcohol; suspender 3 meses antes de concebir; <b>la dosis es semanal</b> (errores fatales con dosis diaria)</td></tr>
+   <tr><td>Leflunomida</td><td>10–20 mg/día</td><td>Hepatotoxicidad, HTA, diarrea; teratógeno de vida media larga</td><td>Lavado con colestiramina antes del embarazo</td></tr>
+   <tr><td>Sulfasalazina</td><td>2–3 g/día</td><td>Citopenias, hepatitis, oligospermia reversible</td><td>Segura en el embarazo</td></tr>
+   <tr><td><b>Azatioprina</b></td><td>1–2,5 mg/kg/día</td><td>Mielosupresión, hepatotoxicidad, pancreatitis</td><td><b>TPMT/NUDT15</b> antes de iniciar; <b>evitar alopurinol y febuxostat</b> (toxicidad grave); segura en el embarazo</td></tr>
+   <tr><td><b>Micofenolato</b></td><td>2–3 g/día (mofetil)</td><td>Gastrointestinal, citopenias, infecciones; <b>teratógeno</b></td><td>Anticoncepción eficaz; suspender ≥6 semanas antes de concebir</td></tr>
+   <tr><td><b>Ciclofosfamida</b></td><td>IV 500 mg c/2 semanas × 6 (Euro-Lupus) o 15 mg/kg en pulsos</td><td>Mielosupresión, cistitis hemorrágica, <b>infertilidad</b>, cáncer de vejiga, infecciones</td><td>Mesna, hidratación, profilaxis de <i>Pneumocystis</i>, preservación de fertilidad</td></tr>
+   <tr><td>Inhibidores de calcineurina (tacrolimus, voclosporina)</td><td>Según niveles</td><td>Nefrotoxicidad, HTA, hiperglucemia, interacciones</td><td>Niveles, creatinina, PA</td></tr>
+   <tr><td><b>Rituximab</b> (anti-CD20)</td><td>1 g × 2 (día 1 y 15) o 375 mg/m² × 4</td><td>Reacciones de infusión, <b>reactivación de VHB</b>, hipogammaglobulinemia, LMP, mala respuesta a vacunas</td><td>Serología de VHB obligatoria; inmunoglobulinas; vacunar antes</td></tr>
+   <tr><td>Belimumab · anifrolumab</td><td>IV/SC · 300 mg IV c/4 semanas</td><td>Infecciones; anifrolumab: herpes zóster</td><td>LES con actividad persistente; belimumab también en nefritis</td></tr>
+   <tr><td><b>Anti-TNF</b> (adalimumab, etanercept, infliximab, certolizumab, golimumab)</td><td>Según el fármaco</td><td><b>Reactivación de TB</b>, infecciones, lupus inducido, desmielinización, empeoran IC grave</td><td>Tamizaje de TB y VHB; certolizumab preferido en el embarazo</td></tr>
+   <tr><td>Tocilizumab (anti-IL-6R)</td><td>IV o SC</td><td>Infecciones, perforación diverticular, dislipidemia</td><td><b>Suprime la PCR y la fiebre</b>: enmascara infecciones</td></tr>
+   <tr><td><b>Inhibidores de JAK</b> (tofacitinib, baricitinib, upadacitinib)</td><td>VO diaria</td><td>Herpes zóster, <b>trombosis venosa</b>, eventos CV mayores y cáncer en mayores de riesgo (ORAL Surveillance)</td><td>Evitar en ≥65 años, fumadores, alto riesgo CV o trombótico, salvo sin alternativas</td></tr>
+  </tbody></table></div>
+
+  <h3 class="sub" id="s3-3">3.3 Antes de inmunosuprimir: prevención</h3>
+  <div class="tw"><table><caption>Lista de verificación antes de glucocorticoides en dosis altas, inmunosupresores o biológicos</caption><thead><tr><th>Medida</th><th>Detalle</th></tr></thead><tbody>
+   <tr><td><b>Tuberculosis latente</b></td><td>IGRA o PPD + Rx de tórax antes de biológicos, JAK y glucocorticoides prolongados; tratamiento preventivo (iniciar ≥1 mes antes del biológico si es posible)</td></tr>
+   <tr><td><b>Hepatitis B</b></td><td>HBsAg, anti-HBc, anti-HBs: HBsAg+ ⇒ antiviral profiláctico (entecavir/tenofovir); anti-HBc+ aislado ⇒ profilaxis con rituximab o vigilancia del ADN-VHB con otros</td></tr>
+   <tr><td>VHC, VIH</td><td>Serologías</td></tr>
+   <tr><td><b><i>Strongyloides</i></b></td><td>En personas de zonas endémicas (gran parte de Colombia), antes de glucocorticoides en dosis altas: serología o <b>ivermectina empírica</b> 200 µg/kg/día × 2 días (previene el síndrome de hiperinfección)</td></tr>
+   <tr><td><b>Profilaxis de <i>Pneumocystis</i></b></td><td>TMP-SMX (1 tableta doble 3 veces/semana o 1 sencilla diaria) con prednisona ≥20 mg/día por ≥4 semanas combinada con otro inmunosupresor o enfermedad de riesgo (vasculitis ANCA, intersticial), con ciclofosfamida y con rituximab en vasculitis</td></tr>
+   <tr><td><b>Vacunación</b> (ACR 2022)</td><td>Inactivadas: influenza anual, neumococo, COVID-19, <b>zóster recombinante</b> (≥18 años inmunosuprimidos), VHB, VPH. <b>Evitar vacunas vivas</b> (fiebre amarilla, triple viral, varicela) con biológicos, JAK o prednisona ≥20 mg por ≥2 semanas. Con rituximab, vacunar ≥2 semanas antes o antes de la siguiente dosis. Suspender metotrexato 2 semanas tras la vacuna de influenza</td></tr>
+   <tr><td><b>Osteoporosis por glucocorticoides</b> (ACR 2022)</td><td>Con prednisona ≥2,5 mg/día por ≥3 meses: calcio 800–1.000 mg y vitamina D 600–800 UI/día; evaluar el riesgo de fractura (FRAX ajustado, densitometría) y bisfosfonato en riesgo moderado-alto</td></tr>
+   <tr><td>Embarazo y anticoncepción</td><td>Prueba de embarazo antes de teratógenos; anticoncepción eficaz</td></tr>
+   <tr><td>Riesgo cardiovascular</td><td>LES y AR aumentan el riesgo CV ≈ 1,5–2 veces: control de PA, lípidos, tabaco</td></tr>
+  </tbody></table></div>
+
+  <h3 class="sub" id="s3-4">3.4 Paciente hospitalizado y urgencias autoinmunes</h3>
+  <div class="box alert"><div class="bt">⚠ Fiebre en el paciente con enfermedad autoinmune: ¿infección o brote?</div>
+   <div class="cols2">
+    <ul class="dots">
+     <li><b>Asumir infección hasta demostrar lo contrario</b>: hemocultivos, urocultivo, Rx de tórax, paracentesis o punción lumbar según el caso; considerar gérmenes oportunistas (<i>Pneumocystis</i>, TB, hongos, CMV, <i>Listeria</i>, <i>Nocardia</i>, <i>Strongyloides</i>).</li>
+     <li>Los glucocorticoides y el tocilizumab <b>atenúan la fiebre y la PCR</b>.</li>
+    </ul>
+    <ul class="dots">
+     <li>En el LES: <b>PCR muy elevada</b> sugiere infección (o serositis); brote: C3/C4 bajos, anti-dsDNA en ascenso, citopenias.</li>
+     <li>La procalcitonina ayuda (más alta en infección bacteriana).</li>
+     <li>Si el paciente está grave y no se puede distinguir: <b>tratar ambos</b> (antibióticos empíricos + aumento de glucocorticoides) mientras se aclara.</li>
+    </ul>
+   </div>
+  </div>
+  <div class="tw"><table><caption>Urgencias autoinmunes</caption><thead><tr><th>Urgencia</th><th>Claves</th><th>Manejo inicial</th></tr></thead><tbody>
+   <tr><td><b>Nefritis lúpica</b></td><td>Proteinuria &gt;0,5 g/día, sedimento activo, ↑ creatinina, C3/C4 bajos, anti-dsDNA alto</td><td><b>Biopsia renal</b>; clases III/IV/V: pulsos de metilprednisolona + <b>micofenolato</b> o ciclofosfamida IV (Euro-Lupus), considerar triple terapia con <b>belimumab</b> o <b>voclosporina</b>; hidroxicloroquina, IECA/ARA-II, control de PA</td></tr>
+   <tr><td>LES con compromiso grave (SNC, citopenias graves, miocarditis, vasculitis)</td><td>Descartar infección, trombosis (SAF), fármacos</td><td>Metilprednisolona 250–1.000 mg/día × 3, luego prednisona en descenso + inmunosupresor (ciclofosfamida, rituximab); IgIV en citopenias graves</td></tr>
+   <tr><td><b>Hemorragia alveolar difusa</b></td><td>Hemoptisis (puede faltar), anemia, infiltrados, ↓ Hb; LES, vasculitis ANCA, anti-MBG</td><td>Soporte respiratorio, pulsos de metilprednisolona + ciclofosfamida o rituximab; recambio plasmático en anti-MBG; LBA para descartar infección</td></tr>
+   <tr><td><b>Vasculitis ANCA con GN rápidamente progresiva</b></td><td>↑ creatinina en días-semanas, hematuria, cilindros eritrocitarios</td><td>Glucocorticoides + rituximab o ciclofosfamida; avacopan; diálisis si es necesario</td></tr>
+   <tr><td><b>Crisis renal esclerodérmica</b></td><td>Esclerosis difusa temprana, anti-RNA pol III, HTA grave de inicio súbito, LRA, anemia microangiopática; precipitada por <b>prednisona &gt;15 mg/día</b></td><td><b>IECA</b> (captopril titulado rápidamente) aunque haya LRA; evitar glucocorticoides en dosis altas; diálisis si es necesario</td></tr>
+   <tr><td><b>SAF catastrófico</b></td><td>Trombosis en ≥3 órganos en &lt;1 semana, microangiopatía, desencadenante (infección, cirugía, suspensión de anticoagulación)</td><td>"Triple terapia": <b>anticoagulación</b> con heparina + glucocorticoides + recambio plasmático y/o IgIV; tratar el desencadenante; considerar rituximab o eculizumab</td></tr>
+   <tr><td><b>Síndrome de activación macrofágica</b></td><td>Fiebre alta, citopenias, <b>ferritina muy alta</b>, ↑ TG, ↓ fibrinógeno, hepatoesplenomegalia, hemofagocitosis (LES, Still)</td><td>HScore; pulsos de glucocorticoides, <b>anakinra</b>, ciclosporina; descartar infección y linfoma</td></tr>
+   <tr><td><b>Arteritis de células gigantes con síntomas visuales</b></td><td>&gt;50 años, cefalea, claudicación mandibular, amaurosis fugaz, VSG/PCR altas</td><td><b>Metilprednisolona IV inmediata</b> (sin esperar la biopsia, que se hace en 1–2 semanas); tocilizumab como ahorrador</td></tr>
+   <tr><td>Dermatomiositis anti-MDA5 con intersticial rápidamente progresiva</td><td>Disnea progresiva, úlceras cutáneas, CK baja o normal</td><td>Glucocorticoides + inhibidor de calcineurina + ciclofosfamida (triple); mortalidad alta</td></tr>
+   <tr><td><b>Insuficiencia suprarrenal aguda</b></td><td>Paciente con glucocorticoides crónicos que suspende o enferma: hipotensión, hiponatremia, hipoglucemia</td><td><b>Hidrocortisona 100 mg IV</b>, luego 50 mg c/6 h (o 200 mg/día en infusión); líquidos</td></tr>
+   <tr><td>Toxicidad por metotrexato</td><td>Mucositis, pancitopenia, neumonitis (tos, disnea, infiltrados)</td><td>Suspender; <b>ácido folínico</b> (leucovorina) en mielotoxicidad; glucocorticoides en neumonitis tras descartar infección</td></tr>
+  </tbody></table></div>
+  <div class="box pearl"><div class="bt">✦ Glucocorticoides en el perioperatorio y enfermedad aguda</div><p>Paciente con glucocorticoides crónicos (≥5 mg de prednisona por ≥3–4 semanas): <b>no suspenderlos</b>. En cirugía mayor electiva (artroplastia), la guía ACR/AAHKS 2022 recomienda mantener la dosis habitual sin dosis de estrés suprafisiológicas; en enfermedad aguda grave, sepsis o cirugía de urgencia, usar <b>hidrocortisona de estrés</b> (50–100 mg IV c/6–8 h). En el perioperatorio de cirugía ortopédica electiva: continuar metotrexato, leflunomida, hidroxicloroquina y sulfasalazina; programar la cirugía al final del intervalo del biológico; suspender los JAK 3 días antes.</p></div>
+
+  <h3 class="sub" id="s3-5">3.5 Embarazo y situaciones especiales</h3>
+  <div class="tw"><table><thead><tr><th>Situación</th><th>Consideraciones</th></tr></thead><tbody>
+   <tr><td><b>Planificación del embarazo</b></td><td>Enfermedad inactiva ≥6 meses antes; cambiar teratógenos (metotrexato, micofenolato, ciclofosfamida, leflunomida con lavado) por compatibles (hidroxicloroquina, azatioprina, sulfasalazina, tacrolimus, glucocorticoides en dosis bajas, certolizumab)</td></tr>
+   <tr><td><b>LES y embarazo</b></td><td>Continuar <b>hidroxicloroquina</b> (reduce brotes y bloqueo AV congénito); <b>aspirina en dosis bajas</b> desde la semana 12 (preeclampsia); diferenciar brote de nefritis frente a preeclampsia</td></tr>
+   <tr><td><b>Anti-Ro positivo</b></td><td>Riesgo de bloqueo AV congénito (≈ 1–2%; ≈ 15–20% si hubo un hijo afectado): ecocardiograma fetal seriado (semanas 16–26), hidroxicloroquina</td></tr>
+   <tr><td><b>Antifosfolípidos</b></td><td>SAF obstétrico: aspirina + heparina de bajo peso molecular profiláctica; SAF trombótico: HBPM terapéutica (warfarina contraindicada en el 1.er trimestre)</td></tr>
+   <tr><td>Lupus inducido por fármacos</td><td>Suspender el fármaco (hidralazina, procainamida, isoniazida, minociclina, anti-TNF); resolución en semanas a meses</td></tr>
+   <tr><td>Inhibidores de puntos de control inmunitario</td><td>Eventos adversos autoinmunes (colitis, tiroiditis, neumonitis, artritis, miositis, DM1 fulminante): manejo con oncología, glucocorticoides según el grado</td></tr>
+  </tbody></table></div>
+
+  <h3 class="sub" id="s3-6">3.6 Comorbilidades y pronóstico</h3>
+  <div class="cols2">
+   <div class="step"><div class="h">Comorbilidades que se deben vigilar</div>
+    <ul class="dots" style="margin:0">
+     <li><b>Enfermedad cardiovascular</b> acelerada (LES ≈ 2–10 veces en mujeres jóvenes; AR ≈ 1,5–2): controlar los factores clásicos con metas estrictas.</li>
+     <li><b>Infecciones</b>: primera causa de muerte en muchas series de LES.</li>
+     <li><b>Osteoporosis</b> y necrosis avascular.</li>
+     <li><b>Neoplasias</b>: linfoma (Sjögren, AR), cáncer de cuello uterino (LES: tamizaje), cáncer asociado a dermatomiositis.</li>
+     <li>Depresión, fatiga, fibromialgia concomitante.</li>
+    </ul></div>
+   <div class="box pearl" style="margin:0"><div class="bt">✦ Pronóstico y regla para recordar</div><p>La supervivencia del LES a 10 años supera hoy el 90% en centros con buen acceso, pero el daño acumulado (nefritis, enfermedad CV, efectos de los glucocorticoides) determina la morbilidad. En la AR, el tratamiento temprano con metotrexato y el control estricto previenen las erosiones y la discapacidad. <b>"ANA con clínica, no clínica por el ANA; infección hasta demostrar lo contrario en el inmunosuprimido con fiebre; hidroxicloroquina para todo lupus; y antes de inmunosuprimir: TB, VHB, <i>Strongyloides</i>, vacunas y hueso"</b>.</p></div>
+  </div>
+ </div>
+</section>
+<!-- ===================== SECCIÓN 4 ===================== -->
+<section class="sec" id="s4">
+ <div class="sec-head">
+  <span class="badge">High yield</span>
+  <h2>4. Sección práctica para el examen</h2>
+  <p class="lead">Calculadoras, preguntas de ronda, casos guiados y autoevaluación. Herramientas de apoyo docente: los criterios de clasificación no sustituyen el juicio clínico ni la valoración por reumatología.</p>
+ </div>
+ <div class="sec-body">
+
+  <h3 class="sub" id="s4-1">4.1 Calculadoras y clasificadores interactivos</h3>
+  <div class="tabs" role="tablist">
+   <button role="tab" aria-selected="true" aria-controls="p1" id="t1">Interpretar el ANA</button>
+   <button role="tab" aria-selected="false" aria-controls="p2" id="t2">LES (EULAR/ACR 2019)</button>
+   <button role="tab" aria-selected="false" aria-controls="p3" id="t3">AR (ACR/EULAR 2010)</button>
+   <button role="tab" aria-selected="false" aria-controls="p4" id="t4">Antes de inmunosuprimir</button>
+  </div>
+
+  <div class="panel" id="p1" role="tabpanel" aria-labelledby="t1">
+   <div class="frm">
+    <div><label for="a_tit">Título del ANA (IFI HEp-2)</label><select id="a_tit"><option value="0">Negativo</option><option value="40">1:40</option><option value="80">1:80</option><option value="160" selected>1:160</option><option value="320">1:320</option><option value="640">≥1:640</option></select></div>
+    <div><label for="a_pat">Patrón</label><select id="a_pat"><option value="hom">Homogéneo</option><option value="mot" selected>Moteado</option><option value="cen">Centromérico</option><option value="nuc">Nucleolar</option><option value="cyt">Citoplasmático</option><option value="dfs">Moteado fino denso (DFS70)</option></select></div>
+    <div><label for="a_pre">Probabilidad clínica</label><select id="a_pre"><option value="low">Baja (síntomas inespecíficos, dolor difuso)</option><option value="mid" selected>Intermedia</option><option value="high">Alta (compromiso multisistémico)</option></select></div>
+   </div>
+   <div class="result" id="a_out" aria-live="polite"></div>
+  </div>
+
+  <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+   <div class="frm">
+    <div><label class="chk" style="margin-top:6px"><input type="checkbox" id="s_ana" checked> ANA ≥1:80 alguna vez (criterio de entrada)</label></div>
+    <div><label for="s_const">Constitucional</label><select id="s_const" class="sd"><option value="0">—</option><option value="2">Fiebre &gt;38,3 °C (2)</option></select></div>
+    <div><label for="s_hem">Hematológico</label><select id="s_hem" class="sd"><option value="0">—</option><option value="3">Leucopenia &lt;4.000 (3)</option><option value="4">Trombocitopenia &lt;100.000 o hemólisis autoinmune (4)</option></select></div>
+    <div><label for="s_neu">Neuropsiquiátrico</label><select id="s_neu" class="sd"><option value="0">—</option><option value="2">Delirium (2)</option><option value="3">Psicosis (3)</option><option value="5">Convulsiones (5)</option></select></div>
+    <div><label for="s_muc">Mucocutáneo</label><select id="s_muc" class="sd"><option value="0">—</option><option value="2">Alopecia no cicatricial o úlceras orales (2)</option><option value="4">Lupus cutáneo subagudo o discoide (4)</option><option value="6" selected>Lupus cutáneo agudo (6)</option></select></div>
+    <div><label for="s_ser">Serosas</label><select id="s_ser" class="sd"><option value="0">—</option><option value="5">Derrame pleural o pericárdico (5)</option><option value="6">Pericarditis aguda (6)</option></select></div>
+    <div><label for="s_mus">Musculoesquelético</label><select id="s_mus" class="sd"><option value="0">—</option><option value="6" selected>Artritis o sinovitis (6)</option></select></div>
+    <div><label for="s_ren">Renal</label><select id="s_ren" class="sd"><option value="0">—</option><option value="4">Proteinuria &gt;0,5 g/24 h (4)</option><option value="8">Biopsia: nefritis clase II o V (8)</option><option value="10">Biopsia: nefritis clase III o IV (10)</option></select></div>
+    <div><label for="s_apl">Antifosfolípidos</label><select id="s_apl" class="sd"><option value="0">—</option><option value="2">Positivos (2)</option></select></div>
+    <div><label for="s_cmp">Complemento</label><select id="s_cmp" class="sd"><option value="0">—</option><option value="3">C3 o C4 bajo (3)</option><option value="4" selected>C3 y C4 bajos (4)</option></select></div>
+    <div><label for="s_ab">Anticuerpos específicos</label><select id="s_ab" class="sd"><option value="0">—</option><option value="6" selected>Anti-dsDNA o anti-Sm (6)</option></select></div>
+   </div>
+   <div class="result" id="s_out" aria-live="polite"></div>
+  </div>
+
+  <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3" hidden>
+   <div class="frm">
+    <div><label for="r_j">Afectación articular</label><select id="r_j"><option value="0">1 articulación grande</option><option value="1">2–10 grandes</option><option value="2">1–3 pequeñas</option><option value="3" selected>4–10 pequeñas</option><option value="5">&gt;10 (al menos 1 pequeña)</option></select></div>
+    <div><label for="r_s">Serología</label><select id="r_s"><option value="0">FR y anti-CCP negativos</option><option value="2">FR o anti-CCP positivo bajo (≤3× LSN)</option><option value="3" selected>FR o anti-CCP positivo alto (&gt;3× LSN)</option></select></div>
+    <div><label for="r_a">Reactantes de fase aguda</label><select id="r_a"><option value="0">PCR y VSG normales</option><option value="1" selected>PCR o VSG elevada</option></select></div>
+    <div><label for="r_d">Duración de los síntomas</label><select id="r_d"><option value="0">&lt;6 semanas</option><option value="1" selected>≥6 semanas</option></select></div>
+   </div>
+   <div class="result" id="r_out" aria-live="polite"></div>
+  </div>
+
+  <div class="panel" id="p4" role="tabpanel" aria-labelledby="t4" hidden>
+   <div class="frm">
+    <div><label for="i_pred">Prednisona (mg/día)</label><input type="number" id="i_pred" value="40"></div>
+    <div><label for="i_wk">Duración prevista (semanas)</label><input type="number" id="i_wk" value="12"></div>
+   </div>
+   <div class="cols2" style="margin-top:12px">
+    <label class="chk"><input type="checkbox" id="i_imm" checked> Otro inmunosupresor (micofenolato, azatioprina, metotrexato)</label>
+    <label class="chk"><input type="checkbox" id="i_cyc"> Ciclofosfamida</label>
+    <label class="chk"><input type="checkbox" id="i_rtx"> Rituximab</label>
+    <label class="chk"><input type="checkbox" id="i_tnf"> Anti-TNF u otro biológico</label>
+    <label class="chk"><input type="checkbox" id="i_jak"> Inhibidor de JAK</label>
+    <label class="chk"><input type="checkbox" id="i_end" checked> Vive o vivió en zona endémica de <i>Strongyloides</i> (área rural/tropical)</label>
+    <label class="chk"><input type="checkbox" id="i_fem"> Mujer en edad fértil</label>
+    <label class="chk"><input type="checkbox" id="i_ild"> Vasculitis ANCA o enfermedad pulmonar intersticial</label>
+   </div>
+   <div class="result" id="i_out" aria-live="polite"></div>
+  </div>
+
+  <h3 class="sub" id="s4-2">4.2 Preguntas de ronda del internista ("corchadoras")</h3>
+  <p class="small">Haz clic en cada pregunta para revelar la respuesta y el porqué.</p>
+  <div id="rqList"></div>
+
+  <h3 class="sub" id="s4-3">4.3 Casos clínicos complejos — análisis guiado</h3>
+  <p class="small">Lee la presentación, piensa tu respuesta y revela cada paso: datos clave ➔ diagnóstico ➔ conducta inmediata.</p>
+  <div id="caseList"></div>
+
+  <h3 class="sub" id="s4-4">4.4 Autoevaluación interactiva — 15 preguntas</h3>
+  <div class="score"><span id="qScore">Puntaje: 0 / 0 respondidas</span><button class="btn o" id="qReset" type="button">Reiniciar quiz</button></div>
+  <div id="quiz"></div>
+ </div>
+</section>
+
+<!-- ===================== SECCIÓN 5 ===================== -->
+<section class="sec" id="s5">
+ <div class="sec-head">
+  <span class="badge">Referencias</span>
+  <h2>5. Bibliografía</h2>
+  <p class="lead">Citación estilo Vancouver.</p>
+ </div>
+ <div class="sec-body">
+  <ol class="refs">
+   <li>Aringer M, Costenbader K, Daikh D, Brinks R, Mosca M, Ramsey-Goldman R, et al. 2019 European League Against Rheumatism/American College of Rheumatology classification criteria for systemic lupus erythematosus. Arthritis Rheumatol. 2019;71(9):1400-12.</li>
+   <li>Aletaha D, Neogi T, Silman AJ, Funovits J, Felson DT, Bingham CO 3rd, et al. 2010 Rheumatoid arthritis classification criteria: an American College of Rheumatology/European League Against Rheumatism collaborative initiative. Arthritis Rheum. 2010;62(9):2569-81.</li>
+   <li>Fanouriakis A, Kostopoulou M, Andersen J, Aringer M, Arnaud L, Bae SC, et al. EULAR recommendations for the management of systemic lupus erythematosus: 2023 update. Ann Rheum Dis. 2024;83(1):15-29.</li>
+   <li>Smolen JS, Landewé RBM, Bergstra SA, Kerschbaumer A, Sepriano A, Aletaha D, et al. EULAR recommendations for the management of rheumatoid arthritis with synthetic and biological disease-modifying antirheumatic drugs: 2022 update. Ann Rheum Dis. 2023;82(1):3-18.</li>
+   <li>Kidney Disease: Improving Global Outcomes (KDIGO) Lupus Nephritis Work Group. KDIGO 2024 Clinical Practice Guideline for the management of lupus nephritis. Kidney Int. 2024;105(1S):S1-S69.</li>
+   <li>Humphrey MB, Russell L, Danila MI, Fink HA, Guyatt G, Cannon M, et al. 2022 American College of Rheumatology guideline for the prevention and treatment of glucocorticoid-induced osteoporosis. Arthritis Rheumatol. 2023;75(12):2088-102.</li>
+   <li>Bass AR, Chakravarty E, Akl EA, Bingham CO, Calabrese L, Cappelli LC, et al. 2022 American College of Rheumatology guideline for vaccinations in patients with rheumatic and musculoskeletal diseases. Arthritis Care Res. 2023;75(3):449-64.</li>
+   <li>Goodman SM, Springer BD, Chen AF, Davis M, Fernandez DR, Figgie M, et al. 2022 American College of Rheumatology/American Association of Hip and Knee Surgeons guideline for the perioperative management of antirheumatic medication. Arthritis Care Res. 2022;74(9):1399-408.</li>
+   <li>Jennette JC, Falk RJ, Bacon PA, Basu N, Cid MC, Ferrario F, et al. 2012 revised International Chapel Hill Consensus Conference nomenclature of vasculitides. Arthritis Rheum. 2013;65(1):1-11.</li>
+   <li>Hellmich B, Sanchez-Alamo B, Schirmer JH, Berti A, Blockmans D, Cid MC, et al. EULAR recommendations for the management of ANCA-associated vasculitis: 2022 update. Ann Rheum Dis. 2024;83(1):30-47.</li>
+   <li>Damoiseaux J, Andrade LEC, Carballo OG, Conrad K, Francescantonio PLC, Fritzler MJ, et al. Clinical relevance of HEp-2 indirect immunofluorescent patterns: the International Consensus on ANA patterns (ICAP) perspective. Ann Rheum Dis. 2019;78(7):879-89.</li>
+   <li>Tan EM, Feltkamp TE, Smolen JS, Butcher B, Dawkins R, Fritzler MJ, et al. Range of antinuclear antibodies in "healthy" individuals. Arthritis Rheum. 1997;40(9):1601-11.</li>
+   <li>Loscalzo J, Fauci AS, Kasper DL, Hauser SL, Longo DL, Jameson JL, editores. Harrison's Principles of Internal Medicine. 22.ª ed. Nueva York: McGraw Hill; 2025. Secc. Disorders of immune-mediated injury.</li>
+   <li>Barbhaiya M, Zuily S, Naden R, Hendry A, Manneville F, Amigo MC, et al. 2023 ACR/EULAR antiphospholipid syndrome classification criteria. Arthritis Rheumatol. 2023;75(10):1687-702.</li>
+   <li>Ytterberg SR, Bhatt DL, Mikuls TR, Koch GG, Fleischmann R, Rivas JL, et al. Cardiovascular and cancer risk with tofacitinib in rheumatoid arthritis (ORAL Surveillance). N Engl J Med. 2022;386(4):316-26.</li>
+   <li>Walsh M, Merkel PA, Peh CA, Szpirt WM, Puéchal X, Fujimoto S, et al. Plasma exchange and glucocorticoids in severe ANCA-associated vasculitis (PEXIVAS). N Engl J Med. 2020;382(7):622-31.</li>
+   <li>Furie R, Rovin BH, Houssiau F, Malvar A, Teng YKO, Contreras G, et al. Two-year, randomized, controlled trial of belimumab in lupus nephritis (BLISS-LN). N Engl J Med. 2020;383(12):1117-28.</li>
+   <li>Pons-Estel GJ, Ugarte-Gil MF, Alarcón GS. Epidemiology of systemic lupus erythematosus. Expert Rev Clin Immunol. 2017;13(8):799-814.</li>
+   <li>Londoño J, Peláez Ballestas I, Cuervo F, Angarita I, Giraldo R, Rueda JC, et al. Prevalencia de la enfermedad reumática en Colombia, según estrategia COPCORD-Asociación Colombiana de Reumatología. Rev Colomb Reumatol. 2018;25(4):245-56.</li>
+  </ol>
+ </div>
+</section>
+<p class="foot">Guía docente de Medicina Interna · Paciente con enfermedad autoinmune · Contenido educativo: el manejo debe hacerse en conjunto con reumatología y verificarse con la ficha técnica y las guías vigentes.</p>
+</div>
+</main>
+<script>
+(function(){
+"use strict";
+var body=document.body, menuBtn=document.getElementById('menuBtn'), scrim=document.getElementById('scrim');
+function closeNav(){body.classList.remove('nav-open');menuBtn.setAttribute('aria-expanded','false');}
+menuBtn.addEventListener('click',function(){var o=body.classList.toggle('nav-open');menuBtn.setAttribute('aria-expanded',o?'true':'false');});
+scrim.addEventListener('click',closeNav);
+document.querySelectorAll('#toc a').forEach(function(a){a.addEventListener('click',closeNav);});
+var links=[].slice.call(document.querySelectorAll('#toc a'));
+var targets=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+function onScroll(){
+  var h=document.documentElement, p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+  document.getElementById('progress').style.width=(p||0)+'%';
+  var cur=null; for(var i=0;i<targets.length;i++){ if(targets[i].getBoundingClientRect().top<160) cur=targets[i]; }
+  links.forEach(function(a){a.classList.toggle('active',!!cur&&a.getAttribute('href')==='#'+cur.id);});
+}
+window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+var root=document.documentElement;
+try{var st=localStorage.getItem('ai-theme'); if(st) root.setAttribute('data-theme',st);}catch(e){}
+document.getElementById('themeBtn').addEventListener('click',function(){
+  var cur=root.getAttribute('data-theme'); if(!cur){cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+  var nx=cur==='dark'?'light':'dark'; root.setAttribute('data-theme',nx); try{localStorage.setItem('ai-theme',nx);}catch(e){}
+});
+document.getElementById('printBtn').addEventListener('click',function(){window.print();});
+var tabs=[].slice.call(document.querySelectorAll('[role=tab]'));
+tabs.forEach(function(t){t.addEventListener('click',function(){
+  tabs.forEach(function(x){x.setAttribute('aria-selected','false');document.getElementById(x.getAttribute('aria-controls')).hidden=true;});
+  t.setAttribute('aria-selected','true');document.getElementById(t.getAttribute('aria-controls')).hidden=false;
+});});
+var lb=document.getElementById('lightbox');
+document.querySelectorAll('figure.fig img').forEach(function(im){im.addEventListener('click',function(){lb.querySelector('img').src=im.src;lb.querySelector('img').alt=im.alt;lb.classList.add('on');});});
+lb.addEventListener('click',function(){lb.classList.remove('on');});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('on');});
+
+function $(id){return document.getElementById(id);}
+function num(id){var v=parseFloat($(id).value);return isNaN(v)?null:v;}
+function li(arr){return '<ul class="dots">'+arr.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>';}
+function pill(txt,col){return '<span class="kpi" style="background:'+col+'">'+txt+'</span>';}
+function on(sel,fn){document.querySelectorAll(sel).forEach(function(i){i.addEventListener('input',fn);i.addEventListener('change',fn);});}
+
+function ch(id){return $(id).checked;}
+/* ---------- 1. ANA ---------- */
+function calcA(){
+ var t=+$('a_tit').value, p=$('a_pat').value, pre=$('a_pre').value, R=[], res, col;
+ if(t===0){res='ANA negativo';col='#1e8449';R.push('Hace muy improbable el LES (VPN alto) y la mayoría de las enfermedades sistémicas ANA-dependientes. Si la sospecha es alta de AR, vasculitis ANCA, miositis o SAF, pedir los anticuerpos específicos de esas entidades (pueden ser ANA negativas).');}
+ else if(t<=80){res='ANA de título bajo';col='#b07a12';R.push('Frecuente en personas sanas (hasta 10–30%), adultos mayores, infecciones y tiroiditis. Con baja probabilidad clínica <b>no tiene significado</b>: no seguir buscando ni repetir.');if(pre==='high') R.push('Con alta sospecha clínica: pedir anticuerpos específicos (anti-dsDNA, ENA) y complemento.');}
+ else {res='ANA positivo significativo (≥1:160)';col='#d35400';R.push(pre==='low'?'Aun a título alto, con baja probabilidad clínica la mayoría no tendrá enfermedad sistémica: interpretar con cautela y vigilar síntomas.':'Con clínica compatible: pedir anticuerpos específicos y laboratorio de órgano.');}
+ if(t>0){
+  var M={hom:'Homogéneo: anti-dsDNA, anti-histona, anti-nucleosoma (LES, lupus inducido).',mot:'Moteado: perfil ENA (anti-Sm, anti-U1-RNP, anti-Ro/SSA, anti-La/SSB): LES, Sjögren, EMTC.',cen:'Centromérico: esclerosis sistémica limitada (capilaroscopia, ecocardiograma para HTP, pruebas de función pulmonar).',nuc:'Nucleolar: esclerosis sistémica (anti-Scl-70, anti-RNA pol III, anti-PM-Scl).',cyt:'Citoplasmático: anti-Jo-1 y antisintetasas (miositis, intersticial), anti-ribosomal P, antimitocondriales (CBP).',dfs:'Moteado fino denso (DFS70) aislado: asociado a personas sanas; argumenta <b>en contra</b> de una enfermedad sistémica (confirmar que sea aislado).'};
+  R.push(M[p]);
+  R.push('Laboratorio de base: hemograma, creatinina, uroanálisis con sedimento y proteinuria, C3/C4, PCR/VSG, CK y función hepática según la clínica.');
+  R.push('Una vez positivo, <b>no repetir el ANA</b> para seguimiento.');
+ }
+ $('a_out').innerHTML='<div class="big">'+res+'</div><p style="margin:6px 0 8px">'+pill('Probabilidad clínica '+{low:'baja',mid:'intermedia',high:'alta'}[pre],col)+'</p>'+li(R);
+}
+on('#p1 select',calcA); calcA();
+
+/* ---------- 2. LES 2019 ---------- */
+function calcS(){
+ var entry=ch('s_ana'), s=0, clin=0, R=[];
+ document.querySelectorAll('.sd').forEach(function(x){var v=+x.value; s+=v; if(v>0&&['s_apl','s_cmp','s_ab'].indexOf(x.id)<0) clin++;});
+ if(!entry){$('s_out').innerHTML='<div class="big">No aplicable</div><p style="margin:6px 0 0">Sin ANA ≥1:80 alguna vez no se cumplen los criterios de clasificación (no excluye el diagnóstico clínico en casos excepcionales).</p>';return;}
+ var cls = s>=10 && clin>=1;
+ R.push('Puntaje total: <b>'+s+'</b> (umbral ≥10 con al menos 1 criterio clínico; se cuenta solo el criterio de mayor peso por dominio y solo si no hay otra explicación más probable).');
+ if(cls) R.push('<b>Clasifica como LES</b>. Hidroxicloroquina para todos, valoración del compromiso de órganos (función renal, sedimento, proteinuria), antifosfolípidos, y tratamiento según la actividad con reumatología.');
+ else R.push('No alcanza el umbral: puede tratarse de un LES incipiente, otra enfermedad del tejido conectivo o una enfermedad indiferenciada; seguimiento clínico y serológico.');
+ if(+$('s_ren').value>=4) R.push('Compromiso renal: considerar <b>biopsia renal</b> para definir la clase y el tratamiento.');
+ $('s_out').innerHTML='<div class="big">EULAR/ACR 2019: '+s+' puntos</div><p style="margin:6px 0 8px">'+pill(cls?'Clasifica como LES':'No clasifica',cls?'#c0392b':'#1e8449')+'</p>'+li(R);
+}
+on('#p2 input,#p2 select',calcS); calcS();
+
+/* ---------- 3. AR 2010 ---------- */
+function calcR(){
+ var s=+$('r_j').value + +$('r_s').value + +$('r_a').value + +$('r_d').value, R=[], cls=s>=6;
+ R.push('Aplicable en pacientes con ≥1 articulación con sinovitis clínica no explicada por otra enfermedad.');
+ if(cls){R.push('<b>Clasifica como AR</b>: iniciar <b>metotrexato</b> (15 mg/semana, titulando a 20–25 mg + ácido fólico) con puente corto de glucocorticoides; meta remisión (DAS28/CDAI) con ajustes cada 1–3 meses.');R.push('Antes: hemograma, ALT, creatinina, VHB, VHC, Rx de tórax; tamizaje de TB si se prevé biológico.');if(+$('r_s').value===3) R.push('Anti-CCP/FR a título alto: mayor riesgo de erosiones y enfermedad extraarticular (factor de mal pronóstico).');}
+ else R.push('No alcanza 6 puntos: considerar artritis indiferenciada, espondiloartritis, artritis viral (parvovirus, chikungunya), microcristalina, LES; reevaluar en el tiempo.');
+ $('r_out').innerHTML='<div class="big">ACR/EULAR 2010: '+s+'/10</div><p style="margin:6px 0 8px">'+pill(cls?'Clasifica como AR':'No clasifica',cls?'#c0392b':'#1e8449')+'</p>'+li(R);
+}
+on('#p3 select',calcR); calcR();
+
+/* ---------- 4. Antes de inmunosuprimir ---------- */
+function calcI(){
+ var pr=num('i_pred')||0, wk=num('i_wk')||0, imm=ch('i_imm'), cyc=ch('i_cyc'), rtx=ch('i_rtx'), tnf=ch('i_tnf'), jak=ch('i_jak'), end=ch('i_end'), fem=ch('i_fem'), ild=ch('i_ild'), R=[];
+ var pcp = (pr>=20&&wk>=4&&(imm||cyc||rtx||ild)) || cyc || (rtx&&ild);
+ R.push('<b>TB latente</b>: IGRA o PPD + Rx de tórax'+(tnf||jak||pr>=15?' (obligatorio por biológico, JAK o glucocorticoide en dosis altas)':'')+'; tratamiento preventivo si es positivo.');
+ R.push('<b>Hepatitis B</b>: HBsAg, anti-HBc, anti-HBs'+(rtx?'; con <b>rituximab</b>, profilaxis antiviral si HBsAg+ o anti-HBc+':'')+'. Serologías de VHC y VIH.');
+ if(end&&pr>=20) R.push('<b><i>Strongyloides</i></b>: serología o <b>ivermectina empírica</b> 200 µg/kg/día × 2 días antes de los glucocorticoides en dosis altas.');
+ R.push(pcp?'<b>Profilaxis de <i>Pneumocystis</i></b> indicada: TMP-SMX 1 tableta doble 3 veces/semana (o sencilla diaria); alternativas: atovacuona, dapsona (medir G6PD).':'Profilaxis de <i>Pneumocystis</i>: no indicada por los criterios ingresados (reevaluar si se suman inmunosupresores).');
+ R.push('<b>Vacunas</b>: inactivadas (influenza, neumococo, COVID-19, zóster recombinante, VHB) idealmente antes de iniciar'+(rtx?'; con rituximab, ≥2 semanas antes':'')+'. <b>Evitar vacunas vivas</b>'+(pr>=20||tnf||jak||rtx?' durante este tratamiento':'')+'.');
+ if(pr>=2.5&&wk>=12) R.push('<b>Hueso</b> (prednisona ≥2,5 mg ≥3 meses): calcio + vitamina D, FRAX ajustado y densitometría; bisfosfonato si el riesgo es moderado-alto.');
+ if(pr>=5&&wk>=3) R.push('<b>Supresión suprarrenal</b> probable: no suspender bruscamente; dosis de estrés en enfermedad grave o cirugía de urgencia.');
+ if(fem&&(cyc||imm)) R.push('Mujer en edad fértil: prueba de embarazo y anticoncepción eficaz (micofenolato, metotrexato, ciclofosfamida son teratógenos); preservación de fertilidad con ciclofosfamida.');
+ if(jak) R.push('JAK: evaluar edad, tabaco, riesgo CV y trombótico (ORAL Surveillance); vacuna de zóster.');
+ R.push('Glucemia, PA y lípidos basales; educación sobre signos de infección.');
+ $('i_out').innerHTML='<div class="big">Lista de verificación previa</div><p style="margin:6px 0 8px">'+pill('Prednisona '+pr+' mg × '+wk+' sem',pcp?'#c0392b':'#334f3e')+'</p>'+li(R);
+}
+on('#p4 input',calcI); calcI();
+/* ---------- Preguntas de ronda ---------- */
+var RQ=[
+["Mujer de 40 años con fatiga y dolor generalizado, ANA 1:80 moteado. ¿Tiene lupus?",
+ "<p><b>Muy probablemente no.</b> Un ANA a 1:80 aparece en ≈ 10–15% de las personas sanas; sin manifestaciones objetivas (artritis, rash, citopenias, serositis, nefritis), la probabilidad de LES es muy baja. El cuadro sugiere fibromialgia, hipotiroidismo, depresión o trastornos del sueño.</p><p>No pedir más anticuerpos ni repetir el ANA; reevaluar si aparecen signos objetivos.</p>"],
+["¿Para qué sirve el anti-dsDNA y para qué el anti-Sm?",
+ "<p><b>Anti-dsDNA</b>: muy específico de LES, su título se correlaciona con la <b>actividad</b> y la <b>nefritis</b>; útil en el seguimiento. <b>Anti-Sm</b>: el más específico (≈ 99%), pero poco sensible; no varía con la actividad. Ambos suman 6 puntos en los criterios EULAR/ACR 2019.</p>"],
+["Paciente con LES que se hospitaliza con fiebre, C3 y C4 normales y PCR de 180 mg/L. ¿Brote o infección?",
+ "<p><b>Infección hasta demostrar lo contrario.</b> En el brote lúpico la VSG sube pero la PCR suele ser normal o poco elevada (salvo serositis o artritis); una PCR muy alta con complemento normal apunta a infección bacteriana. Cultivos, imagen, procalcitonina y antibióticos empíricos; considerar oportunistas si recibe inmunosupresión intensa.</p>"],
+["¿Por qué todo paciente con LES debe recibir hidroxicloroquina?",
+ "<p>Porque reduce los <b>brotes</b>, el daño acumulado, la <b>trombosis</b> (sobre todo con antifosfolípidos), mejora la respuesta en la nefritis y la <b>supervivencia</b>, y es segura en el embarazo (reduce el riesgo de bloqueo AV congénito con anti-Ro). Dosis ≤5 mg/kg/día de peso real; fondo de ojo basal y anual tras 5 años.</p>"],
+["¿Qué debe hacer antes de dar 60 mg/día de prednisona a un paciente procedente del Urabá?",
+ "<p>Además del tamizaje de TB y VHB: <b>descartar o tratar empíricamente <i>Strongyloides stercoralis</i></b> (ivermectina 200 µg/kg × 2 días), porque los glucocorticoides en dosis altas pueden desencadenar el <b>síndrome de hiperinfección</b> con sepsis por gramnegativos y mortalidad muy alta. Considerar profilaxis de <i>Pneumocystis</i> si se combinará con otro inmunosupresor.</p>"],
+["¿Qué es la crisis renal esclerodérmica y qué fármaco salva el riñón?",
+ "<p>Complicación de la esclerosis sistémica difusa temprana (anti-RNA pol III): <b>HTA grave de inicio súbito</b>, LRA, anemia microangiopática y trombocitopenia; precipitada por <b>prednisona &gt;15 mg/día</b>. El tratamiento es un <b>IECA</b> (captopril titulado rápidamente), aun con creatinina en ascenso. Antes de los IECA la mortalidad superaba el 80%.</p>"],
+["Paciente en tratamiento con metotrexato semanal con úlceras orales, pancitopenia y fiebre. ¿Qué pasó?",
+ "<p><b>Toxicidad por metotrexato</b>: frecuentemente por error de dosificación (tomado a diario en vez de semanal), deterioro de la función renal o interacción (TMP-SMX, AINE). Suspender el metotrexato, <b>ácido folínico (leucovorina)</b> IV, soporte, factor estimulante de colonias si hay neutropenia febril, y antibióticos.</p>"],
+["¿Por qué no se combina azatioprina con alopurinol?",
+ "<p>El alopurinol inhibe la xantina oxidasa, que metaboliza la 6-mercaptopurina; la combinación eleva los metabolitos tóxicos y causa <b>mielosupresión grave</b>. Si es imprescindible, reducir la azatioprina al 25% con control estricto del hemograma, o elegir otro inmunosupresor. Medir TPMT y NUDT15 antes de iniciar la azatioprina.</p>"],
+["¿Cuándo se da profilaxis de <i>Pneumocystis</i>?",
+ "<p>Con prednisona ≥20 mg/día por ≥4 semanas combinada con otro inmunosupresor, o en enfermedades de alto riesgo (vasculitis ANCA, enfermedad intersticial); siempre con ciclofosfamida; y con rituximab en vasculitis. Elección: <b>TMP-SMX</b> (1 doble 3 veces por semana o 1 sencilla diaria); alternativas: atovacuona, dapsona (medir G6PD). Ojo con TMP-SMX + metotrexato (mielotoxicidad).</p>"],
+["Paciente con AR que inicia adalimumab. ¿Qué tamizaje requiere?",
+ "<p>El TNF es esencial para mantener el granuloma: tamizar <b>TB latente</b> (IGRA o PPD + Rx de tórax) y tratarla antes del biológico; <b>VHB</b> (HBsAg, anti-HBc), VHC, VIH; actualizar vacunas inactivadas (zóster recombinante, neumococo, influenza) y evitar las vivas. Preguntar por IC grave y enfermedad desmielinizante (contraindicaciones relativas).</p>"],
+["¿Qué anticuerpo de una embarazada con LES obliga a vigilancia con ecocardiograma fetal?",
+ "<p><b>Anti-Ro/SSA</b> (y anti-La): atraviesa la placenta y puede causar <b>bloqueo AV congénito</b> (≈ 1–2%; ≈ 15–20% si hubo un hijo afectado) y lupus neonatal. Ecocardiograma fetal o medición del PR mecánico seriados entre las semanas 16 y 26; la hidroxicloroquina reduce el riesgo.</p>"],
+["¿Cómo distingue un brote de nefritis lúpica de la preeclampsia en una embarazada?",
+ "<p>Ambas dan proteinuria e HTA. A favor de <b>nefritis</b>: sedimento activo (hematuria dismórfica, cilindros), complemento bajo, anti-dsDNA en ascenso, otros signos de actividad lúpica, aparición antes de las 20 semanas. A favor de <b>preeclampsia</b>: &gt;20 semanas, complemento normal, ácido úrico alto, trombocitopenia con transaminasas elevadas (HELLP), cociente sFlt-1/PlGF elevado. A veces coexisten.</p>"],
+["Paciente con glucocorticoides crónicos, hipotenso tras una cirugía de urgencia. ¿Qué sospecha?",
+ "<p><b>Insuficiencia suprarrenal aguda</b> por supresión del eje (prednisona ≥5 mg por ≥3–4 semanas). Tratamiento: <b>hidrocortisona 100 mg IV</b> y luego 50 mg c/6 h, líquidos, buscar el desencadenante. En enfermedad aguda grave o cirugía de urgencia, se debe dar dosis de estrés de forma preventiva.</p>"],
+["¿Qué paciente con AR no es buen candidato a un inhibidor de JAK?",
+ "<p>Según ORAL Surveillance (tofacitinib frente a anti-TNF), los JAK se asociaron a más eventos CV mayores, cáncer y trombosis en pacientes de <b>≥65 años</b>, <b>fumadores</b> o exfumadores de larga duración, con <b>factores de riesgo CV</b>, antecedente de <b>cáncer</b> o de <b>tromboembolismo</b>. En ellos, usarlos solo si no hay alternativas adecuadas.</p>"],
+["Paciente con arteritis de células gigantes que refiere visión borrosa hace 2 horas. ¿Espera la biopsia?",
+ "<p><b>No.</b> La pérdida visual es una urgencia (oclusión de la arteria oftálmica o ciliar posterior): iniciar <b>metilprednisolona IV</b> (500–1.000 mg/día × 3) de inmediato. La biopsia de arteria temporal o la ecografía siguen siendo útiles hasta 1–2 semanas después de iniciar los glucocorticoides. El tocilizumab ayuda a reducir los glucocorticoides.</p>"]
+];
+$('rqList').innerHTML=RQ.map(function(q,i){return '<details class="rq"><summary><span class="num">'+(i+1)+'</span>'+q[0]+'</summary><div class="ans">'+q[1]+'</div></details>';}).join('');
+
+/* ---------- Casos ---------- */
+var CASES=[
+{t:"Caso 1 · Mujer joven con artritis, rash y proteinuria", tag:"Hospitalización",
+ p:"Mujer de 24 años con 2 meses de artralgias e inflamación en manos, eritema malar que empeora con el sol, úlceras orales y edema de miembros inferiores. PA 152/94. Hb 10,1, leucocitos 3.200, plaquetas 128.000. Creatinina 1,3 mg/dL. Uroanálisis: hematuria dismórfica y cilindros eritrocitarios; proteinuria 2,4 g/24 h. ANA 1:640 homogéneo, anti-dsDNA positivo, anti-Sm positivo, C3 y C4 bajos.",
+ k:["EULAR/ACR 2019: ANA ≥1:80 + lupus cutáneo agudo (6) + artritis (6) + leucopenia (3) + proteinuria (4; biopsia pendiente) + C3 y C4 bajos (4) + anti-dsDNA/anti-Sm (6): muy por encima de 10.","<b>Nefritis lúpica</b> probable proliferativa (sedimento activo, proteinuria, ↑ creatinina).","Descartar infección antes de inmunosuprimir."],
+ d:"Lupus eritematoso sistémico con nefritis lúpica activa (probable clase III/IV).",
+ c:["<b>Biopsia renal</b> (clase y actividad/cronicidad).","Pulsos de metilprednisolona y luego prednisona en descenso (meta ≤5 mg en 6 meses).","<b>Micofenolato</b> 2–3 g/día o ciclofosfamida IV (Euro-Lupus); considerar añadir belimumab o voclosporina.","<b>Hidroxicloroquina</b>; IECA/ARA-II; control de PA; estatina si hay dislipidemia.","Antes: TB, VHB, VHC, VIH, <i>Strongyloides</i>, antifosfolípidos, prueba de embarazo y anticoncepción eficaz, vacunas, calcio y vitamina D."]},
+{t:"Caso 2 · Poliartritis simétrica", tag:"Consulta",
+ p:"Mujer de 48 años, fumadora, con 3 meses de dolor e inflamación de muñecas, metacarpofalángicas e interfalángicas proximales de ambas manos, rigidez matutina de 2 horas. Examen: sinovitis en 8 pequeñas articulaciones. Anti-CCP 180 U/mL (LSN 20), FR 64 UI/mL, PCR 28 mg/L. Rx de manos: osteopenia yuxtaarticular, sin erosiones.",
+ k:["ACR/EULAR 2010: 4–10 pequeñas (3) + serología alta (3) + PCR elevada (1) + ≥6 semanas (1) = <b>8/10</b>.","Anti-CCP alto y tabaquismo: factores de mal pronóstico (erosiones)."],
+ d:"Artritis reumatoide seropositiva de inicio reciente.",
+ c:["<b>Metotrexato</b> 15 mg/semana (titular a 20–25 mg) + ácido fólico; puente corto de prednisona en dosis bajas.","Laboratorio basal (hemograma, ALT, creatinina, VHB, VHC, Rx de tórax) y control cada 1–3 meses.","Meta: remisión (DAS28/CDAI) en 6 meses; si no, añadir biológico o JAK (en fumadora, preferir biológico).","<b>Cesación del tabaco</b>, vacunas, control del riesgo CV."]},
+{t:"Caso 3 · Fiebre en paciente con vasculitis en tratamiento", tag:"Urgencias",
+ p:"Hombre de 58 años con granulomatosis con poliangitis en inducción con rituximab y prednisona 40 mg/día desde hace 6 semanas. Sin profilaxis. Consulta por fiebre, tos seca y disnea progresiva de 5 días. SatO₂ 86% al aire, desaturación con mínimo esfuerzo. LDH 620 U/L. TC: opacidades en vidrio esmerilado bilaterales difusas. Creatinina estable, sedimento sin cambios.",
+ k:["Inmunosupresión intensa (rituximab + prednisona ≥20 mg por &gt;4 semanas) <b>sin profilaxis</b>.","Hipoxemia desproporcionada, LDH alta, vidrio esmerilado difuso: <b>neumonía por <i>Pneumocystis jirovecii</i></b> probable.","Diferencial: hemorragia alveolar (Hb, LBA), infección viral (CMV, COVID-19), neumonitis farmacológica."],
+ d:"Probable neumonía por <i>Pneumocystis jirovecii</i> en paciente inmunosuprimido sin profilaxis.",
+ c:["<b>TMP-SMX</b> en dosis altas (15–20 mg/kg/día de trimetoprim) por 21 días; considerar glucocorticoides adyuvantes según hipoxemia (evidencia derivada de VIH).","LBA con PCR/inmunofluorescencia para <i>Pneumocystis</i>, cultivos, CMV; β-D-glucano sérico.","Soporte de oxígeno; UCI si empeora.","Lección: profilaxis con TMP-SMX en todo paciente con rituximab o prednisona ≥20 mg + otro inmunosupresor."]},
+{t:"Caso 4 · Esclerosis sistémica con hipertensión súbita", tag:"Urgencias",
+ p:"Mujer de 45 años con esclerosis sistémica difusa diagnosticada hace 10 meses (anti-RNA polimerasa III positivo). Hace 3 semanas inició prednisona 30 mg/día por artritis. Consulta por cefalea y visión borrosa. PA 196/118. Creatinina 2,4 mg/dL (basal 0,8), hemoglobina 9,2, plaquetas 82.000, esquistocitos en el frotis, LDH elevada.",
+ k:["Esclerosis difusa temprana, anti-RNA pol III y <b>prednisona &gt;15 mg/día</b>: factores de riesgo.","HTA grave súbita + LRA + anemia microangiopática: <b>crisis renal esclerodérmica</b>."],
+ d:"Crisis renal esclerodérmica.",
+ c:["<b>IECA</b>: captopril 6,25–12,5 mg, titulando cada 4–8 h hasta controlar la PA (meta: descenso progresivo), aunque la creatinina aumente.","Reducir la prednisona a la mínima dosis posible.","Añadir calcioantagonista si no se controla con IECA a dosis máxima; evitar descensos bruscos.","Diálisis si es necesario (puede recuperarse en meses); continuar IECA a largo plazo."]},
+{t:"Caso 5 · Paciente lúpica con trombosis múltiples", tag:"UCI",
+ p:"Mujer de 31 años con LES y SAF triple positivo, que suspendió la warfarina hace 2 semanas por un procedimiento dental. Consulta con dolor abdominal, disnea y confusión. Se documentan trombosis de vena renal, embolia pulmonar e infartos cerebrales en la RM, en el curso de 5 días. Plaquetas 45.000, esquistocitos escasos, creatinina 2,9 mg/dL.",
+ k:["Trombosis en ≥3 órganos en &lt;1 semana con microangiopatía: <b>SAF catastrófico</b>.","Desencadenante: suspensión de la anticoagulación (y procedimiento)."],
+ d:"Síndrome antifosfolípido catastrófico en paciente con LES.",
+ c:["UCI; <b>anticoagulación con heparina no fraccionada</b>.","<b>Glucocorticoides</b> en dosis altas (pulsos de metilprednisolona).","<b>Recambio plasmático y/o IgIV</b>.","Tratar desencadenantes (infección); considerar rituximab o eculizumab si es refractario.","Al recuperarse: warfarina indefinida (INR 2–3 o mayor según el caso); nunca ACOD en SAF triple positivo; educación sobre la suspensión de la anticoagulación con puente."]}
+];
+$('caseList').innerHTML=CASES.map(function(c){
+ return '<div class="case"><div class="case-h"><b>'+c.t+'</b><span class="badge">'+c.tag+'</span></div><div class="case-b">'+
+  '<div class="stage"><div class="lab">Presentación</div><p style="margin:4px 0 0">'+c.p+'</p></div>'+
+  '<div class="stage hidden" data-s="1"><div class="lab">Datos clave</div>'+li(c.k)+'</div>'+
+  '<div class="stage dx hidden" data-s="2"><div class="lab">Diagnóstico</div><p style="margin:4px 0 0"><b>'+c.d+'</b></p></div>'+
+  '<div class="stage tx hidden" data-s="3"><div class="lab">Conducta inmediata</div>'+li(c.c)+'</div>'+
+  '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn o cnext" type="button">Revelar datos clave</button><button class="btn ghost call" type="button">Mostrar todo</button></div></div></div>';
+}).join('');
+var labels=['Revelar datos clave','Revelar diagnóstico','Revelar conducta','Caso completo ✓'];
+document.querySelectorAll('.case').forEach(function(cs){
+ var step=0, nb=cs.querySelector('.cnext');
+ function show(n){cs.querySelectorAll('.stage[data-s]').forEach(function(s){if(+s.getAttribute('data-s')<=n) s.classList.remove('hidden');});step=n;nb.textContent=labels[Math.min(n,3)];nb.disabled=n>=3;}
+ nb.addEventListener('click',function(){show(step+1);});
+ cs.querySelector('.call').addEventListener('click',function(){show(3);});
+});
+
+/* ---------- Quiz ---------- */
+var QZ=[
+{q:"Un ANA 1:80 en una persona asintomática:",o:["Diagnostica LES","Es frecuente en personas sanas y no indica enfermedad","Obliga a iniciar hidroxicloroquina","Debe repetirse cada mes"],a:1,e:"Positivo en ≈ 10–15% de sanos."},
+{q:"Criterio de entrada de EULAR/ACR 2019 para LES:",o:["Anti-dsDNA positivo","ANA ≥1:80","C3 bajo","Artritis"],a:1,e:"Luego ≥10 puntos con ≥1 criterio clínico."},
+{q:"Anticuerpo más específico de LES:",o:["ANA","Anti-Ro","Anti-Sm","Factor reumatoide"],a:2,e:"≈ 99% de especificidad."},
+{q:"Anticuerpo asociado a actividad y nefritis lúpica:",o:["Anti-histona","Anti-dsDNA","Anti-centrómero","Anti-Jo-1"],a:1,e:"Junto con C3/C4 bajos."},
+{q:"Anticuerpo más específico de artritis reumatoide:",o:["Factor reumatoide","Anti-CCP","ANA","p-ANCA"],a:1,e:"&gt;95% de especificidad; pronóstico de erosiones."},
+{q:"Anti-centrómero se asocia a:",o:["Esclerosis sistémica limitada","Dermatomiositis","GPA","LES"],a:0,e:"Riesgo de hipertensión pulmonar."},
+{q:"c-ANCA/PR3 se asocia a:",o:["Poliangitis microscópica","Granulomatosis con poliangitis","Arteritis de Takayasu","Poliarteritis nodosa"],a:1,e:"MPO: PAM y GEPA."},
+{q:"Fármaco indicado en todo paciente con LES salvo contraindicación:",o:["Metotrexato","Hidroxicloroquina","Ciclofosfamida","Rituximab"],a:1,e:"Reduce brotes, trombosis y mortalidad."},
+{q:"Antes de un anti-TNF se debe tamizar:",o:["Tuberculosis latente y VHB","Solo glucemia","Solo PSA","Nada"],a:0,e:"También VHC, VIH y vacunas."},
+{q:"Profilaxis de <i>Pneumocystis</i> está indicada con:",o:["Prednisona 5 mg/día","Prednisona ≥20 mg ≥4 semanas + otro inmunosupresor","Hidroxicloroquina","Sulfasalazina"],a:1,e:"Y con ciclofosfamida; TMP-SMX."},
+{q:"Antes de prednisona en dosis altas en zona tropical:",o:["Albendazol","Ivermectina empírica o serología de <i>Strongyloides</i>","Metronidazol","Nada"],a:1,e:"Previene la hiperinfección."},
+{q:"Tratamiento de la crisis renal esclerodérmica:",o:["Pulsos de metilprednisolona","IECA (captopril)","Betabloqueador","Diurético solo"],a:1,e:"Los glucocorticoides en dosis altas la precipitan."},
+{q:"Combinación peligrosa:",o:["Azatioprina + alopurinol","Hidroxicloroquina + prednisona","Metotrexato + ácido fólico","Rituximab + TMP-SMX"],a:0,e:"Mielosupresión grave."},
+{q:"Anti-Ro positivo en el embarazo se asocia a:",o:["Macrosomía","Bloqueo AV congénito","Preeclampsia siempre","Defecto del tubo neural"],a:1,e:"Ecocardiograma fetal semanas 16–26."},
+{q:"Arteritis de células gigantes con síntomas visuales:",o:["Esperar la biopsia","Metilprednisolona IV inmediata","AINE","Anticoagulación"],a:1,e:"La biopsia sigue siendo útil 1–2 semanas después."}
+];
+var answered=0, correct=0;
+function updScore(){var t='Puntaje: '+correct+' / '+answered+' respondidas'; if(answered===QZ.length){t+=' · Nota equivalente: '+(correct/QZ.length*5).toFixed(1)+' / 5.0';} $('qScore').textContent=t;}
+function renderQuiz(){
+ answered=0;correct=0;updScore();
+ $('quiz').innerHTML=QZ.map(function(x,i){
+  return '<div class="qz" data-i="'+i+'"><div class="qt"><span>'+(i+1)+'.</span> '+x.q+'</div><div class="opts">'+
+   x.o.map(function(o,j){return '<button class="opt" type="button" data-j="'+j+'">'+String.fromCharCode(65+j)+') '+o+'</button>';}).join('')+
+   '</div><div class="exp"><b>Respuesta correcta: '+String.fromCharCode(65+x.a)+'.</b> '+x.e+'</div></div>';
+ }).join('');
+ document.querySelectorAll('.qz').forEach(function(b){
+  var i=+b.getAttribute('data-i');
+  b.querySelectorAll('.opt').forEach(function(btn){btn.addEventListener('click',function(){
+   if(b.classList.contains('done')) return;
+   var j=+btn.getAttribute('data-j'); b.classList.add('done'); answered++;
+   if(j===QZ[i].a){btn.classList.add('right');correct++;} else {btn.classList.add('wrong');b.querySelector('[data-j="'+QZ[i].a+'"]').classList.add('right');}
+   b.querySelectorAll('.opt').forEach(function(x){x.disabled=true;}); updScore();
+  });});
+ });
+}
+$('qReset').addEventListener('click',renderQuiz); renderQuiz();
+})();
+</script>
+</body>
+</html>
